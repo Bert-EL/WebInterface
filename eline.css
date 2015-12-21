@@ -1,0 +1,117 @@
+/* 
+    Created on : 26-nov-2015, 15:38:13
+    Author     : developer
+*/
+
+body
+{
+    margin:             0;
+    padding:            0;
+    background-color:   #EBEFF2;
+}
+
+div
+{
+    font-size:          0.9em;
+    font-family:        Verdana, Arial, Sans-serif;
+}
+
+/*ul*/
+/*{*/
+    /*position:           relative;*/
+    /*top:                0;*/
+    /*left:               0;*/
+    /*margin:             0;*/
+    /*padding:            0;*/
+    /*width:              100%;*/
+    /*list-style-type:    none;*/
+/*}*/
+
+/*li*/
+/*{*/
+    /*cursor:             pointer;*/
+/*}*/
+
+table
+{
+    width:              100vw;
+    height:             100vh;
+    padding:            0;
+    margin:             0;
+}
+
+tr, td
+{
+    width:              100%;
+    height:             100%;
+    padding:            0;
+    margin:             0;
+    /* border:             2px solid black; */
+}
+
+iframe
+{
+    border:             none;
+}      
+
+.ZabbixInterface
+{
+    width:              100%;
+    height:             100%;
+}
+
+#MenuBar
+{
+    width:              100%;
+    height:             100%;             
+}
+
+.button
+{
+    width:              100%;
+    background-color:   #1D92CD;
+    color:              #1D4161;
+    text-align:         center;
+    font-family:        Verdana, Arial, Sans-serif;
+    font-size:          0.9em;
+    cursor:             pointer;
+    border-top:         1px solid black;
+    border-left:        1px solid black;
+    border-right:       1px solid black;
+    position:           relative;
+    top:                0;
+    left:               0;
+    margin:             0;
+    padding:            0;
+}
+
+.table
+{
+    display:            table;
+    width:              100vw;
+}
+
+.tr
+{
+    display:            table-row;
+}
+
+.th, .td
+{
+    display:            table-cell;
+}
+
+.thead
+{
+    display:            table-header-group;
+}
+
+.tbody
+{
+    display:            table-row-group;
+}
+
+.tfoot
+{
+    display:            table-footer-group;
+}

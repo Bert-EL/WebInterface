@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<customers>
+  <exportdate>10/12/2015 02:35:29</exportdate>
+  <customer item="1">
+    <name>Architectenbureau Katrien Bauters BVBA</name>
+    <id>5d55e20e-6635-4d0a-a385-cf3159441134</id>
+    <code>4782</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (1 Server)</description>
+      <servers>1</servers>
+      <startdate>21/10/2015</startdate>
+      <enddate>20/10/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="2">
+    <name>Biscuits Seghers NV</name>
+    <id>52a77f05-6449-42fd-ae41-2970474ffbeb</id>
+    <code>3534</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (8 Servers)</description>
+      <servers>8</servers>
+      <startdate>15/07/2015</startdate>
+      <enddate>15/07/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="3">
+    <name>C &amp; C NV</name>
+    <id>5135011f-13b2-4ba5-bc75-4490345ea056</id>
+    <code>5769</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (6 Servers)</description>
+      <servers>6</servers>
+      <startdate>29/05/2015</startdate>
+      <enddate>29/05/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="4">
+    <name>CIA Nat. Kamer van Gerechtsdeurwaarders België</name>
+    <id>45809e1d-ea09-4089-ac66-bab7019a49f8</id>
+    <code>10630</code>
+    <email>info@nkgb-cnhb.be</email>
+    <contract>
+      <description>Proactive Server Monitoring /Server (10 Servers)</description>
+      <servers>10</servers>
+      <startdate>25/10/2015</startdate>
+      <enddate>25/10/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="5">
+    <name>DIAM cvba</name>
+    <id>53505c9e-3df9-4203-9757-00a907749880</id>
+    <code>5400</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring/Server (2 servers)</description>
+      <servers>2</servers>
+      <startdate>25/02/2015</startdate>
+      <enddate>25/02/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="6">
+    <name>Diplad cvba</name>
+    <id>d432d617-44d8-466e-aadb-9f0a3bd83760</id>
+    <code>5695</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (5 Servers)</description>
+      <servers>5</servers>
+      <startdate>1/07/2015</startdate>
+      <enddate>30/06/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="7">
+    <name>GBO Design - Engineering BVBA</name>
+    <id>236af5a2-dc22-42f8-ad35-4a7840995eec</id>
+    <code>4946</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (1 Server)</description>
+      <servers>1</servers>
+      <startdate>29/10/2015</startdate>
+      <enddate>29/10/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="8">
+    <name>Goossaert BVBA</name>
+    <id>888d1ed3-7dc6-4f30-b79a-8ff9b36c4e28</id>
+    <code>5470</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (1 Server)</description>
+      <servers>1</servers>
+      <startdate>10/11/2015</startdate>
+      <enddate>10/11/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="9">
+    <name>Greeve Patrick Gerechtsdeurwaarder</name>
+    <id>ee2b124c-eaf5-4de1-8ff7-6bf5aeb5dc01</id>
+    <code>5276</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (4 Servers)</description>
+      <servers>4</servers>
+      <startdate>5/03/2015</startdate>
+      <enddate>5/03/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="10">
+    <name>Luxauto NV</name>
+    <id>5ef46512-ce45-4563-b16b-3e26ccfd862b</id>
+    <code>5168</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (5 Servers)</description>
+      <servers>5</servers>
+      <startdate>29/09/2015</startdate>
+      <enddate>29/09/2015</enddate>
+    </contract>
+  </customer>
+  <customer item="11">
+    <name>Modero Brussel BV ovv C.V.B.A.</name>
+    <id>69c62637-231a-4009-a05c-03fa603bf7e0</id>
+    <code>5458</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (3 Servers)</description>
+      <servers>3</servers>
+      <startdate>1/12/2015</startdate>
+      <enddate>30/11/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="12">
+    <name>Modero West-Vlaanderen</name>
+    <id>b8e32d7d-a849-4c11-98d8-3f99dc30529e</id>
+    <code>5704</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring/Server (1 server)</description>
+      <servers>1</servers>
+      <startdate>15/07/2015</startdate>
+      <enddate>15/07/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="13">
+    <name>Nationale Kamer van Gerechtsdeurwaarders</name>
+    <id>84ad5765-94d2-4b63-afaf-974b5e6114f4</id>
+    <code>5291</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (6 Servers)</description>
+      <servers>6</servers>
+      <startdate>15/07/2015</startdate>
+      <enddate>15/07/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="14">
+    <name>Notaris Florence Deforce BVBA</name>
+    <id>b4ab619b-5729-41b4-bfe4-acef73dadafb</id>
+    <code>5764</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (3 Servers)</description>
+      <servers>3</servers>
+      <startdate>31/05/2015</startdate>
+      <enddate>31/05/2015</enddate>
+    </contract>
+  </customer>
+  <customer item="15">
+    <name>Notariskantoor Evergem</name>
+    <id>2b4e6a40-6711-48c0-bf06-b750d21971f8</id>
+    <code>5801</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (2 Servers)</description>
+      <servers>2</servers>
+      <startdate>20/10/2015</startdate>
+      <enddate>20/10/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="16">
+    <name>Notarissen Els Van Tuyckom &amp; Gert De Kesel BV/BVBA</name>
+    <id>5099a5c1-a66b-4f94-9539-c63456a7934f</id>
+    <code>4682</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (1 Servers)</description>
+      <servers>1</servers>
+      <startdate>2/09/2015</startdate>
+      <enddate>2/09/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="17">
+    <name>SAM-TES vzw</name>
+    <id>3b2b1913-f7d5-4be9-9897-ee5e2762ba24</id>
+    <code>5705</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (3 Servers)</description>
+      <servers>3</servers>
+      <startdate>15/10/2015</startdate>
+      <enddate>15/10/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="18">
+    <name>Tapi Metaalkonstructies NV</name>
+    <id>63b482d5-882d-4152-bbf9-4860b30c7b61</id>
+    <code>4334</code>
+    <email>dirk@tapi.be</email>
+    <contract>
+      <description>Proactive Server Monitoring /Server (2 Servers)</description>
+      <servers>2</servers>
+      <startdate>1/11/2015</startdate>
+      <enddate>31/10/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="19">
+    <name>V &amp; G Sensory</name>
+    <id>a19db803-9dd2-48b7-885b-31143289fd61</id>
+    <code>3780</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (1 Servers)</description>
+      <servers>1</servers>
+      <startdate>22/08/2015</startdate>
+      <enddate>22/08/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="20">
+    <name>Van Delm Transport BVBA</name>
+    <id>d4b99233-1e83-47a6-8155-80525dcb8a18</id>
+    <code>3658</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (4 Servers)</description>
+      <servers>4</servers>
+      <startdate>16/06/2015</startdate>
+      <enddate>16/06/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="21">
+    <name>Vartago BVBA</name>
+    <id>d0e2bda2-878b-43a1-bf48-bb7838eff092</id>
+    <code>5380</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (1 Server)</description>
+      <servers>1</servers>
+      <startdate>6/08/2015</startdate>
+      <enddate>6/08/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="22">
+    <name>Vermeulen BVBA</name>
+    <id>770bfa66-fa98-4020-bffe-096663c97c55</id>
+    <code>5726</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (2 Servers)</description>
+      <servers>2</servers>
+      <startdate>1/12/2015</startdate>
+      <enddate>30/11/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="23">
+    <name>Vesting Finance NV</name>
+    <id>f6d9a740-664d-4b26-b244-e9f012cfe6b4</id>
+    <code>5065</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (8 Servers)</description>
+      <servers>8</servers>
+      <startdate>15/12/2015</startdate>
+      <enddate>15/12/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="24">
+    <name>VSM Belgium</name>
+    <id>60ca7aa6-5349-4f00-9476-09c34920bd9a</id>
+    <code>4650</code>
+    <email>diane.vanroosenbroek@vsm.be</email>
+    <contract>
+      <description>Proactive Server Monitoring /Server (1 Server)</description>
+      <servers>1</servers>
+      <startdate>17/04/2015</startdate>
+      <enddate>17/04/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="25">
+    <name>Warnez NV</name>
+    <id>15d9fd9f-dd3b-4818-b29c-6912998c8c48</id>
+    <code>3971</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (9 Server)</description>
+      <servers>9</servers>
+      <startdate>15/10/2015</startdate>
+      <enddate>15/10/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="26">
+    <name>Wilms NV</name>
+    <id>193b224f-e3da-465d-a5af-7dd81b7ecf10</id>
+    <code>5665</code>
+    <email />
+    <contract>
+      <description>Proactive Server Monitoring /Server (8 Servers)</description>
+      <servers>8</servers>
+      <startdate>1/04/2015</startdate>
+      <enddate>1/04/2016</enddate>
+    </contract>
+  </customer>
+  <customer item="27">
+    <name>Wirtz Developments NV</name>
+    <id>3d5734f5-dcdc-4403-ac4e-5d95981d9002</id>
+    <code>4610</code>
+    <email>stephan.van.hove@wirtznv.be</email>
+    <contract>
+      <description>Proactive Server Monitoring /Server (1 Servers)</description>
+      <servers>1</servers>
+      <startdate>1/04/2015</startdate>
+      <enddate>31/03/2016</enddate>
+    </contract>
+  </customer>
+</customers>

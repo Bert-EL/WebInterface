@@ -1,0 +1,91 @@
+/*
+    Created on : 26-nov-2015, 15:38:13
+    Author     : developer
+*/
+
+body
+{
+    margin:             20px;
+    padding:            0;
+    background-color:   #EBEFF2;
+}
+
+div
+{
+    font-size:          0.9em;
+    font-family:        Verdana, Arial, Sans-serif;
+}
+
+label.font
+{
+    font-size:          0.8em;
+    font-family:        Verdana, Arial, Sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+    font-family:        Verdana, Arial, Sans-serif;
+}
+
+select.field
+{
+    width:              400px;
+}
+
+input.field
+{
+    width:              400px;
+}
+
+input.button
+{
+    margin-left:        10px;
+}
+
+/*input[readonly]*/
+/*{*/
+    /*background-color:   #EBEBE4;*/
+/*}*/
+
+.table
+{
+    display:            table;
+    width:              640px;
+    height:             auto;
+}
+
+.tr
+{
+    display:            table-row;
+}
+
+.th
+{
+    display:            table-cell;
+    width:              150px;
+    padding-bottom:     2px;
+    /*border:             1px solid black;*/
+}
+
+.td
+{
+    display:            table-cell;
+    width:              auto;
+    padding-bottom:     2px;
+    /*border:             1px solid black;*/
+}
+
+.thead
+{
+    display:            table-header-group;
+}
+
+.tbody
+{
+    display:            table-row-group;
+}
+
+.tfoot
+{
+    display:            table-footer-group;
+}
