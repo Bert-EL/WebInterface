@@ -3,29 +3,29 @@
     Author     : developer
 */
 
-body
-{
-    margin:             20px;
-    padding:            0;
-    background-color:   #EBEFF2;
-}
+/*body*/
+/*{*/
+    /*margin:             20px;*/
+    /*padding:            0;*/
+    /*background-color:   #EBEFF2;*/
+/*}*/
 
-div
-{
-    font-size:          0.9em;
-    font-family:        Verdana, Arial, Sans-serif;
-}
+/*div*/
+/*{*/
+    /*font-size:          0.9em;*/
+    /*font-family:        Verdana, Arial, Sans-serif;*/
+/*}*/
 
-label.font
-{
-    font-size:          0.8em;
-    font-family:        Verdana, Arial, Sans-serif;
-}
+/*label.font*/
+/*{*/
+    /*font-size:          0.8em;*/
+    /*font-family:        Verdana, Arial, Sans-serif;*/
+/*}*/
 
-h1, h2, h3, h4, h5, h6
-{
-    font-family:        Verdana, Arial, Sans-serif;
-}
+/*h1, h2, h3, h4, h5, h6*/
+/*{*/
+    /*font-family:        Verdana, Arial, Sans-serif;*/
+/*}*/
 
 select.field
 {
@@ -37,10 +37,10 @@ input.field
     width:              400px;
 }
 
-input.button
-{
-    margin-left:        10px;
-}
+/*input.button*/
+/*{*/
+    /*margin-left:        10px;*/
+/*}*/
 
 /*input[readonly]*/
 /*{*/

@@ -822,6 +822,35 @@ namespace WebServices
         }
 
         /**
+         * @param $username
+         * @param $password
+         * @return array
+         */
+        public function AuthenticateUser($username, $password)
+        {
+            $isValidUser = false;
+
+            if (is_string($username) && !empty($username) && is_string($password))
+            {
+                if ($this->IsValidAuthToken())
+                {
+                    $request = new ZabbixWrapper();
+                    $request->Create("user.login");
+                    $request->params = new ZabbixAuthRequest($username, $password);
+
+                    $response = $this->Send($request);
+
+                    if ($this->IsValidResponse($response) && array_key_exists("result", $response))
+                    {
+                        $isValidUser = true;
+                    }
+                }
+            }
+
+            return $isValidUser;
+        }
+
+        /**
          * Get the details (alias and user ID) of all users.
          *
          * @link https://www.zabbix.com/documentation/2.2/manual/api/reference/user/get
