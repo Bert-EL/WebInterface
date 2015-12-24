@@ -8,6 +8,8 @@
 
 namespace WebServices
 {
+    #region Base Class
+
     class ZabbixWrapper
     {
         public $jsonrpc;
@@ -33,11 +35,50 @@ namespace WebServices
         }
     }
 
+    #endregion
+
+    #region Request Classes
+
     class ZabbixRequest
     {
         public function __construct()
         { }
     }
+
+    #region Host Request Classes
+
+    class ZabbixHostCreateRequest extends ZabbixRequest
+    {
+        public $host;
+        public $interfaces;
+        public $groups = array("groupid" => "");
+    }
+
+    class ZabbixHostDoesExistRequest extends ZabbixRequest
+    {
+        public $host;
+        public $nodeids = array();
+
+        public function __construct($id)
+        {
+            if (is_int($id))
+            {
+                $this->nodeids[] = $id;
+            }
+            elseif (is_array($id))
+            {
+                foreach ($id as $item)
+                {
+                    if (is_int($item))
+                    {
+                        $this->nodeids[] = $item;
+                    }
+                }
+            }
+        }
+    }
+
+    #endregion
 
     class ZabbixAuthRequest extends ZabbixRequest
     {
@@ -144,13 +185,6 @@ namespace WebServices
         public $rights = array("permission" => "", "id" => "");
     }
 
-    class ZabbixHostCreateRequest extends ZabbixRequest
-    {
-        public $host;
-        public $interfaces;
-        public $groups = array("groupid" => "");
-    }
-
     class ZabbixHostGroupGetRequest extends ZabbixRequest
     {
         public $groupids;
@@ -220,6 +254,8 @@ namespace WebServices
             }
         }
     }
+
+    #endregion
 
     class ZabbixTemplateCreateGroups
     {

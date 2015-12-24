@@ -10,7 +10,7 @@
 namespace WebServices
 {
     require_once dirname(__FILE__) . '/WebServiceAPI.php';
-    require_once dirname(__DIR__) . '/myphp/ZabbixWrappers.php';
+    require_once dirname(__FILE__) . '/ZabbixWrappers.php';
 
     /***
      * Zabbix name type enumerations.
@@ -273,7 +273,7 @@ namespace WebServices
 
         #endregion
 
-        #region Host(group) Methods
+        #region Host Methods
 
         /**
          * Retrieve a host according to the given host ID.
@@ -378,7 +378,7 @@ namespace WebServices
         /**
          * Get the host ID of the given host name.
          *
-         * @param   string  $hostname           An object representation of the host whose ID will be retrieved.
+         * @param   string      $hostname       The name of the host whose ID will be retrieved.
          * @return  int                         The host ID if successful; otherwise 0.
          */
         public function GetHostID($hostname)
@@ -400,6 +400,30 @@ namespace WebServices
             }
 
             return 0;
+        }
+
+        /**
+         * Get the name of the host by using the passed ID.
+         *
+         * @param   int         $id             The ID of the host whose name will be retrieved.
+         * @return  string                      The hostname if successful; otherwise an empty string.
+         */
+        public function GetHostName($id)
+        {
+            $h = null;
+
+            if (is_int($id))
+            {
+                foreach ($this->GetHosts() as $item)
+                {
+                    if ($item->ID == $id)
+                    {
+                        return $item->Name;
+                    }
+                }
+            }
+
+            return "";
         }
 
         /**
@@ -440,6 +464,108 @@ namespace WebServices
 
             return $hostID;
         }
+
+        /**
+         * Delete the given host(s) by the passed ID.
+         *
+         * @link    https://www.zabbix.com/documentation/2.2/manual/api/reference/host/delete
+         * @param   int|array       $id             The host(s) that will be deleted.
+         * @return  bool                            True if the host(s) is/are successfully deleted; otherwise false.
+         */
+        public function DeleteHostByID($id)
+        {
+            $isDeleted = false;
+
+            if (is_int($id) || is_array($id))
+            {
+                if ($this->IsValidAuthToken())
+                {
+                    $request = new ZabbixWrapper();
+                    $request->Create("host.delete", $this->GetAuthToken(), $this->nonce++);
+                    $request->params = array();
+
+                    if (is_int($id))
+                    {
+                        $request->params[] = (string)$id;
+                    }
+                    elseif (is_array($id) && count($id) > 0)
+                    {
+                        foreach ($id as $item)
+                        {
+                            if (is_int($item))
+                            {
+                                $request->params[] = (string)$item;
+                            }
+                        }
+                    }
+
+                    $response = $this->Send($request);
+
+                    if ($this->IsValidResponse($response) && !is_null($response["result"]["hostids"]) && count($response["result"]["hostids"]) > 0)
+                    {
+                        $isDeleted = true;
+                    }
+                }
+            }
+
+            return $isDeleted;
+        }
+
+        /**
+         * Delete the given host by it's name.
+         *
+         * @link    https://www.zabbix.com/documentation/2.2/manual/api/reference/host/delete
+         * @param   string          $name           The name of the host that'll be deleted.
+         * @return  bool                            True if the host(s) is/are successfully deleted; otherwise false
+         */
+        public function DeleteHostByName($name)
+        {
+            $isDeleted = false;
+
+            if (is_string($name))
+            {
+                $isDeleted = $this->DeleteHostByID($this->GetHostID($name));
+            }
+
+            return $isDeleted;
+        }
+
+        /**
+         * Evaluate whether the host exists by using its host ID or hostname.
+         *
+         * @param   int             $arg            The ID or name of the host.
+         * @return  bool                            True if the host exists; otherwise false.
+         */
+        public function DoesHostExist($arg)
+        {
+            $isDeleted = false;
+
+            if (is_int($arg) || is_string($arg))
+            {
+                if ($this->IsValidAuthToken())
+                {
+                    $hostname = (is_string($arg)) ? ($arg) : ($this->GetHostName($arg));
+
+                    $request = new ZabbixWrapper();
+                    $request->Create("host.exists", $this->GetAuthToken(), $this->nonce++);
+                    $request->params = new ZabbixHostDoesExistRequest(null);
+                    $request->params->host = $hostname;
+
+                    $response = $this->Send($request);
+
+                    if ($this->IsValidResponse($response))
+                    {
+                        $isDeleted = $response["result"];
+                    }
+                }
+            }
+
+            return $isDeleted;
+        }
+
+        #endregion
+
+        #region Host Group Methods
 
         /**
          * Create a new formatted host group.
@@ -641,6 +767,52 @@ namespace WebServices
             return $hostgroup;
         }
 
+        /**
+         * Delete the given host(s) by the passed ID.
+         *
+         * @link    https://www.zabbix.com/documentation/2.2/manual/api/reference/hostgroup/delete
+         * @param   int|array    $arg               The ID(s) or name of the host(s) that will be deleted.
+         * @return  bool                            True if the host(s) is/are successfully deleted; otherwise false.
+         */
+        public function DeleteHostGroup($arg)
+        {
+            $isDeleted = false;
+
+            if (is_int($arg) || is_array($arg))
+            {
+                if ($this->IsValidAuthToken())
+                {
+                    $request = new ZabbixWrapper();
+                    $request->Create("hostgroup.delete", $this->GetAuthToken(), $this->nonce++);
+                    $request->params = array();
+
+                    if (is_int($arg))
+                    {
+                        $request->params[] = (string)$arg;
+                    }
+                    elseif (is_array($arg) && count($arg) > 0)
+                    {
+                        foreach ($arg as $item)
+                        {
+                            if (is_int($item))
+                            {
+                                $request->params[] = (string)$item;
+                            }
+                        }
+                    }
+
+                    $response = $this->Send($request);
+
+                    if ($this->IsValidResponse($response) && !is_null($response["result"]["groupids"]) && count($response["result"]["groupids"]) > 0)
+                    {
+                        $isDeleted = true;
+                    }
+                }
+            }
+
+            return $isDeleted;
+        }
+
         #endregion
 
         #region Template Methods
@@ -795,7 +967,7 @@ namespace WebServices
 
         #endregion
 
-        #region User(group) Methods
+        #region User Methods
 
         /**
          * Get the total amount of users a customer has.
@@ -853,8 +1025,8 @@ namespace WebServices
         /**
          * Get the details (alias and user ID) of all users.
          *
-         * @link https://www.zabbix.com/documentation/2.2/manual/api/reference/user/get
-         * @return array A collection of user aliases and user IDs if successfull; otherwise an empty list.
+         * @link    https://www.zabbix.com/documentation/2.2/manual/api/reference/user/get
+         * @return  array                       A collection of user aliases and user IDs if successfull; otherwise an empty list.
          */
         public function GetUsers()
         {
@@ -880,6 +1052,32 @@ namespace WebServices
 
             return $usergroups;
         }
+
+        /**
+         * Evaluate if a user exists.
+         *
+         * @param   string   $username      The name of the user.
+         * @return bool                     True if the user exist; otherwise false.
+         */
+        public function DoesUserExists($username)
+        {
+            if (!is_null($username))
+            {
+                foreach ($this->GetUsers() as $item)
+                {
+                    if ($item->name == $username)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region User Group Methods
 
         /**
          * Get the user group ID of the given user group name.
@@ -1100,28 +1298,6 @@ namespace WebServices
             }
 
             return $userGroupID;
-        }
-
-        /**
-         * Evaluate if a user exists.
-         *
-         * @param   string   $username      The name of the user.
-         * @return bool                     True if the user exist; otherwise false.
-         */
-        public function DoesUserExists($username)
-        {
-            if (!is_null($username))
-            {
-                foreach ($this->GetUsers() as $item)
-                {
-                    if ($item->name == $username)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         /**

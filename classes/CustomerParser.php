@@ -6,6 +6,7 @@
  * Date: 10/12/2015
  * Time: 15:27
  */
+
 namespace WebServices
 {
     class CustomerParser
