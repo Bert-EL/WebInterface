@@ -2,9 +2,8 @@
 
 namespace WebServices;
 
-    require_once dirname(__FILE__) . '/classes/ZabbixAPI.php';
-    require_once dirname(__FILE__) . '/classes/CustomerParser.php';
-    require_once dirname(__FILE__) . '/classes/NewCustomer.php';
+    require_once dirname(__FILE__) . '/include/ZabbixAPI.php';
+    require_once dirname(__FILE__) . '/include/CustomerParser.php';
 
     $zapi = new ZabbixAPI();
     $zapi->Authenticate();
@@ -89,11 +88,11 @@ namespace WebServices;
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
-                                    <a href="page_user_lock_1.html">
+                                    <a href="">
                                         <i class="icon-lock"></i> Lock Screen </a>
                                 </li>
                                 <li>
-                                    <a href="page_user_login_1.html">
+                                    <a href="">
                                         <i class="icon-key"></i> Log Out </a>
                                 </li>
                             </ul>
@@ -232,7 +231,7 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="wizard/new-customer/" class="nav-link">
                                         <span class="title">Nieuwe klant aanmaken</span>
                                     </a>
                                 </li>

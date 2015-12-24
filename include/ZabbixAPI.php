@@ -9,18 +9,21 @@
 
 namespace WebServices
 {
-    require_once dirname(__FILE__) . '/WebServiceAPI.php';
-    require_once dirname(__FILE__) . '/ZabbixWrappers.php';
+    require_once dirname(__FILE__) . "/WebServiceAPI.php";
+    require_once dirname(__FILE__) . "/ZabbixWrappers.php";
+    require_once dirname(__FILE__) . "/ZabbixClasses.php";
 
     /***
-     * Zabbix name type enumerations.
-     *
      * Class NameType
+     *
+     * Zabbix name type enumerations.
      *
      * @package WebServices
      */
     abstract class NameType
     {
+        #region Constants
+
         /**
          * The name is targetted for a user.
          */
@@ -47,20 +50,29 @@ namespace WebServices
         const Action = 4;
 
         /**
+         * The name is targetted for a template.
+         */
+        const Template = 5;
+
+        /**
          * Indication of the end of the enumeration.
          */
-        const SENTNEL = 5;
+        const SENTNEL = 6;
+
+        #endregion
     }
 
     /**
-     * Host group permissions for the user group.
-     *
      * Class Permission
+     *
+     * Host group permissions for the user group.
      *
      * @package WebServices
      */
     abstract class Permission
     {
+        #region Constants
+
         /**
          * Deny access to the host group.
          */
@@ -75,17 +87,21 @@ namespace WebServices
          * Read-Write access to the host group.
          */
         const ReadWriteAccess = 3;
+
+        #endregion
     }
 
     /**
-     * Interface types of the host.
-     *
      * Class HostInterface
+     *
+     * Interface types of the host.
      *
      * @package WebServices
      */
     abstract class InterfaceType
     {
+        #region Constants
+
         /**
          * The host is an Agent.
          */
@@ -106,6 +122,16 @@ namespace WebServices
          */
         const JMX = 4;
 
+        #endregion
+
+        #region Public Methods
+
+        /**
+         * Get the names of all the constants in the class.
+         * The index of the name is the value of the constant.
+         *
+         * @return  array                       The names of all the constants as an array.
+         */
         public static function GetNames()
         {
             $class = new \ReflectionClass(__CLASS__);
@@ -113,6 +139,12 @@ namespace WebServices
             return $constants;
         }
 
+        /**
+         * Get the values of all the constants in the class.
+         * The index of the value is the name of the constant.
+         *
+         * @return  array                       The values of all the constants as an array.
+         */
         public static function GetValues()
         {
             $class = new \ReflectionClass(__CLASS__);
@@ -120,35 +152,67 @@ namespace WebServices
             return $constants;
         }
 
-        public static function GetValue($const)
+        /**
+         * Get the value of a constant by the passed name of the constant.
+         *
+         * @param   string      $name           The name of the constant.
+         * @return  mixed                       The value of the constant if successful; otherwise false.
+         */
+        public static function GetValue($name)
         {
-            return self::GetValues()[$const];
+            if (is_string($name))
+            {
+                return self::GetValues()[$name];
+            }
+            else
+            {
+                return false;
+            }
         }
+
+        #endregion
     }
 
     /**
-     * Zabbix user type enumerations
-     *
      * Class UserType
+     *
+     * Zabbix user type enumerations
      *
      * @package WebServices
      */
     abstract class UserType
     {
+        #region Constants
+
+        /**
+         * It'll be a basic user.
+         */
         const User = 1;
+
+        /**
+         * It'll be an admin user.
+         */
         const Admin = 2;
+
+        /**
+         * It'll be a super admin user.
+         */
         const SuperAdmin = 3;
+
+        #endregion
     }
 
     /**
-     * Zabbix language definitions.
-     *
      * Class Language
+     *
+     * Zabbix language definitions.
      *
      * @package WebServices
      */
     abstract class Language
     {
+        #region Constants
+
         const English_GB    = "en_GB";
         const English_US    = "en_US";
         const Chinese       = "zh_CN";
@@ -159,6 +223,8 @@ namespace WebServices
         const Portuguese    = "pt_BR";
         const Russian       = "ru_RU";
         const Slovak        = "sk_SK";
+
+        #endregion
     }
 
     /**
@@ -170,18 +236,26 @@ namespace WebServices
     {
         #region Private Fields
 
+        /**
+         * Provides an incremental ID for the API queries.
+         *
+         * @var int
+         */
         private $nonce = 1;
 
-        /// <summary>
-        /// Collection of the name type indications.
-        /// </summary>
+        /**
+         * Collection of the name type indications.
+         *
+         * @var array
+         */
         private $nameTypes = array
         (
             NameType::User => "U",
             NameType::UserGroup =>"UG",
             NameType::Host =>"H",
             NameType::HostGroup =>"HG",
-            NameType::Action => "A"
+            NameType::Action => "A",
+            NameType::Template => "T"
         );
 
         #endregion
@@ -193,8 +267,7 @@ namespace WebServices
          */
         public function __construct()
         {
-            $this->Initialize("Admin", "zabbix", "application/json",
-                "http://172.16.252.1//zabbix/api_jsonrpc.php");
+            $this->Initialize("Admin", "zabbix", "application/json", "http://172.16.252.1//zabbix/api_jsonrpc.php");
         }
 
         #endregion
@@ -240,14 +313,7 @@ namespace WebServices
          */
         public function GetAuthToken()
         {
-            if (isset($_SESSION["authtoken"]))
-            {
-                return $_SESSION["authtoken"];
-            }
-            else
-            {
-                return "";
-            }
+            return (isset($_SESSION["authtoken"]) ? ($_SESSION["authtoken"]) : (""));
         }
 
         /**
@@ -1351,7 +1417,7 @@ namespace WebServices
                     $request = new ZabbixWrapper();
                     $request->Create("action.create", $this->GetAuthToken(), $this->nonce++);
                     $request->params = new ZabbixActionCreateRequest();
-                    $request->params->name = $this->GetNewAction($customer);
+                    $request->params->name = $this->GetNewActionName($customer);
                     $request->params->def_shortdata = "Auto registration: {HOST.HOST}";
                     $request->params->def_longdata = "Host name: {HOST.HOST}\r\nHost IP: {HOST.IP}\r\nAgent port: {HOST.PORT}";
 
@@ -1449,7 +1515,7 @@ namespace WebServices
          * Get a new username.
          *
          * @param   int         $customerCode   The customer's code.
-         * @return mixed|string                 The username in case a new user is created.
+         * @return mixed|string                 The name for a new user.
          */
         public function GetNewUsername($customerCode)
         {
@@ -1460,11 +1526,22 @@ namespace WebServices
          * Get a new action name.
          *
          * @param   Customer     $customer      The customer (includes the name and code).
-         * @return  mixed|string                The username in case a new user is created.
+         * @return  mixed|string                The name for a new action.
          */
-        public function GetNewAction($customer)
+        public function GetNewActionName($customer)
         {
             return $this->FormatGroupName(NameType::Action, $customer);
+        }
+
+        /**
+         * Get a new template name.
+         *
+         * @param   Customer     $customer      The customer (includes the name and code).
+         * @return  mixed|string                The name for a new template.
+         */
+        public function GetNewTemplateName($customer)
+        {
+            return $this->FormatGroupName(NameType::Template, $customer);
         }
 
         /**
@@ -1496,13 +1573,13 @@ namespace WebServices
          * @param   Customer    $customer       The customer (includes the name and code).
          * @return  mixed|null|string           [{UG|HG}{CODE}] {CODE} if successful; otherwise [{UG|HG}{ERROR}]
          */
-        private function FormatGroupName($nType, $customer)
+        public function FormatGroupName($nType, $customer)
         {
             $formattedName = null;
 
             if (is_int($nType) && !is_null($customer))
             {
-                $groupType = "{UG|HG|A}";
+                $groupType = "{UG|HG|A|T}";
                 $formattedName = "[" . $groupType . "{CODE}] {NAME}";
                 $formattedName = str_replace($groupType, $this->nameTypes[$nType], $formattedName);
 

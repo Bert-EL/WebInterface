@@ -47,20 +47,17 @@
     <!-- END HEAD -->
 
     <body class=" login">
-
         <!-- BEGIN LOGO -->
         <div class="logo">
-            <a href="../Portal/index.php">
+            <a href="../">
                 <img src="../assets/pages/img/logo-big.jpg" alt="" />
             </a>
         </div>
         <!-- END LOGO -->
-
         <!-- BEGIN LOGIN -->
         <div class="content">
-
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="../Portal/index.php" method="post">
+            <form class="login-form" action="../index.php" method="post">
                 <h3 class="form-title font-green">Aanmelden</h3>
                 <div class="alert alert-danger display-hide">
                     <button class="close" data-close="alert"></button>
@@ -126,6 +123,5 @@
 
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->
-
     </body>
 </html>

@@ -1,63 +1,60 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: developer
- * Date: 15/12/2015
- * Time: 9:29
+ * Date: 24/12/2015
+ * Time: 10:11
  */
 
 namespace WebServices;
 
     require_once dirname(dirname(__DIR__)) . '/include/ZabbixAPI.php';
+    require_once dirname(dirname(__DIR__)) . '/include/ZabbixClasses.php';
     require_once dirname(dirname(__DIR__)) . '/include/CustomerParser.php';
 
+    $parser = new CustomerParser();
     $zapi = new ZabbixAPI();
     $zapi->Authenticate();
-
-    $parser = new CustomerParser();
 
     var_dump($_REQUEST);
 
     $customer = new Customer();
+    $user = new User();
+    $userGroup = new UserGroup();
+    $hostGroup = new HostGroup();
+    $action = new Action();
+    $template = new Template();
 
-    $userID = 0;
-    $newUsername = "";
-
-    $userGroupID = 0;
-    $newUserGroupName = "";
-
-    $hostGroupID = 0;
-    $newHostGroupName = "";
-
-    $isNameSelected = !empty($_POST["name"]);
+    $isNameSelected = !empty($_REQUEST["cbox_Customer"]);
 
     if ($zapi->IsValidAuthToken())
     {
         if ($isNameSelected)
         {
-            $customer->name = $_POST["name"];
+            $customer->name = $_POST["cbox_Customer"];
             $customer->code = $parser->GetCodeByName($customer->name);
 
-            $newUsername = $zapi->GetNewUsername($customer->code);
-            $newUserGroupName = $zapi->GetNewUserGroupName($customer);
-            $newHostGroupName = $zapi->GetNewHostGroupName($customer);
+            $user->name = $zapi->GetNewUsername($customer->code);
+            $userGroup->name = $zapi->GetNewUserGroupName($customer);
+            $hostGroup->name = $zapi->GetNewHostGroupName($customer);
+            $action->name = $zapi->GetNewActionName($customer);
+            $template->name = $zapi->GetNewTemplateName($customer);
         }
 
         if (!empty($_POST["submit_fInit"]))
         {
-            $hostGroupID = $zapi->CreateHostGroupByCode($customer);
-            $userGroupID = $zapi->CreateUserGroupByCode($customer, $hostGroupID, Permission::ReadOnlyAccess);
-            $userID = $zapi->CreateUserByCode($customer->code, NewCustomer::DEFAULT_PASSWORD, $userGroupID);
-            $zapi->CreateActionForNewHost($customer, $newHostGroupName, array(10163, 10211));
+//            $hostGroup->id = $zapi->CreateHostGroupByCode($customer);
+//            $userGroup->id = $zapi->CreateUserGroupByCode($customer, $hostGroup->id, Permission::ReadOnlyAccess);
+//            $user->id = $zapi->CreateUserByCode($customer->code, NewCustomer::DEFAULT_PASSWORD, $userGroup->id);
+//            $zapi->CreateActionForNewHost($customer, $hostGroup->name, array(10163, 10211));
         }
 
         if (!empty($_POST["submit_fHost"]))
         {
-            $ip = $_POST["ip"];
-            $dns = $_POST["dns"];
-            $type = $_POST["type"];
-            $port = $_POST["port"];
+            $ip = $_POST["tbox_IP"];
+            $dns = $_POST["tbox_DNS"];
+            $type = $_POST["cbox_Type"];
+            $port = $_POST["tbox_Port"];
             $hostname = $_POST["hostname"];
             $useIP = ($_POST["useip"] === "on");
             $isDefault = ($_POST["default"] === "on");
@@ -67,9 +64,10 @@ namespace WebServices;
             $interface->ip = ($useIP) ? ($ip) : ("");
             $interface->dns = (!$useIP) ? ($dns) : ("");
 
-            $zapi->CreateHost($hostname, $hostGroupID, $interface);
+//            $zapi->CreateHost($hostname, $hostGroupID, $interface);
         }
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -108,7 +106,6 @@ namespace WebServices;
         <link href="../../assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
 
-        <link href="functions.new-customers.style.css" rel="stylesheet" type="text/css"/>
         <link rel="shortcut icon" href="../../favicon.ico" />
     </head>
     <!-- END HEAD -->
@@ -142,11 +139,11 @@ namespace WebServices;
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
                                     <a href="">
-                                    <i class="icon-lock"></i> Lock Screen </a>
+                                        <i class="icon-lock"></i> Lock Screen </a>
                                 </li>
                                 <li>
                                     <a href="">
-                                    <i class="icon-key"></i> Log Out </a>
+                                        <i class="icon-key"></i> Log Out </a>
                                 </li>
                             </ul>
                         </li>
@@ -165,6 +162,7 @@ namespace WebServices;
 
         <!-- BEGIN CONTAINER -->
         <div class="page-container">
+
             <!-- BEGIN SIDEBAR -->
             <div class="page-sidebar-wrapper">
                 <!-- BEGIN SIDEBAR -->
@@ -318,63 +316,128 @@ namespace WebServices;
                     </div>
 
                     <!-- BEGIN FORMS -->
-                    <div class="col-md-6">
+                    <div class="col-md-12">
 
                         <!-- BEGIN USER(GROUP) & HOSTGROUP SETTINGS -->
-                        <div class="portlet light bordered">
+                        <div class="portlet light bordered" id="form_wizard_1">
                             <div class="portlet-title">
                                 <div class="caption font-red-sunglo">
-                                    <i class="icon-user font-red-sunglo"></i>
+                                    <i class="icon-layers font-red-sunglo"></i>
                                     <span class="caption-subject bold uppercase">Gebruiker, gebruikersgroep en host groep</span>
                                 </div>
                             </div>
                             <div class="portlet-body form">
                                 <form class="form-horizontal" role="form" id="fInit" action="" method="post">
-                                    <div class="form-body">
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="cbox_Customer">Klant</label>
-                                            <div class="col-md-9">
-                                                <select name="name" class="form-control" id="cbox_Customer">
-                                                    <option value=""></option>
-                                                    <?php
-                                                    foreach ($parser->GetCustomers() as $item)
-                                                    {
-                                                        if ($isNameSelected && $customer->name == $item->name)
-                                                        {
-                                                            echo "<option selected value='" . $item->name . "'>" . $item->name . "</option>";
-                                                        }
-                                                        else
-                                                        {
-                                                            echo "<option value='" . $item->name . "'>" . $item->name . "</option>";
-                                                        }
-                                                    }
-                                                    ?>
-                                                </select>
+                                    <div class="form-wizard">
+                                        <div class="form-body">
+                                            <ul class="nav nav-ills nav-justified steps">
+                                                <li class="active">
+                                                    <a href="#tab1" data-toggle="tab" class="step" aria-expanded="true">
+                                                        <span class="number">1</span>
+                                                        <span class="desc">
+                                                            <i class="fa fa-check"></i>
+                                                            Stap 1
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tab2" data-toggle="tab" class="step">
+                                                        <span class="number">2</span>
+                                                        <span class="desc">
+                                                            <i class="fa fa-check"></i>
+                                                            Stap 2
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <div id="bar" class="progress progress-striped" role="progressbar">
+                                                <div class="progress-bar progress-bar-success"></div>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="tab1">
+                                                    <div class="form-group">
+                                                        <label class=" control-label col-md-3" for="cbox_Customer">Klant</label>
+                                                        <div class="col-md-4">
+                                                            <select name="cbox_Customer" id="cbox_Customer" class="form-control" >
+                                                                <option value=""></option>
+                                                                <?php
+                                                                    foreach ($parser->GetCustomers() as $item)
+                                                                    {
+                                                                        if ($isNameSelected && $customer->name == $item->name)
+                                                                        {
+                                                                            echo "<option selected value='" . $item->name . "'>" . $item->name . "</option>";
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            echo "<option value='" . $item->name . "'>" . $item->name . "</option>";
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3" for="tbox_User">Gebruiker</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" id="tbox_User" class="form-control" value="<?php echo $user->name ?>" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3" for="tbox_UserGroup">Gebruikersgroep</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" id="tbox_UserGroup" class="form-control" value="<?php echo $userGroup->name ?>" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label" for="tbox_HostGroup">Host groep</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" id="tbox_HostGroup" class="form-control" value="<?php echo $hostGroup->name ?>" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label" for="tbox_Action">Actie</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" id="tbox_Action" class="form-control" value="<?php echo $action->name ?>" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3" for="tbox_Template">Template</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" id="tbox_Template" class="form-control" value="<?php echo $template->name ?>" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-6 col-md-offset-2">
+                                                            <div class="note note-danger">
+                                                                <h4 class="block">Opgelet!</h4>
+                                                                <p>
+                                                                    Door op 'volgende' te klikken worden bovenstaande elementen aangemaakt.
+                                                                    De volgende stap heeft namelijk deze gegevens nodig om de klant aan te maken.
+                                                                    Bij een fout dient u deze elementen, momenteel, manueel te verwijderen.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <input name="code" type="hidden" id="hidden_code" value="<?php echo $customer->code ?>">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="tbox_User">Gebruiker</label>
-                                            <div class="col-md-9">
-                                                <input type="text" id="tbox_User" class="form-control" value="<?php echo $newUsername ?>" readonly>
-                                            </div>
+                                        <div class="form-actions right">
+                                            <a href="javascript:;" class="btn default button-previous disabled" style="display: none;">
+                                                <i class="fa fa-angle-left"></i>
+                                                Terug
+                                            </a>
+                                            <a href="javascript:;" class="btn btn-outline green button-next">
+                                                Volgende
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                            <a href="javascript:;" class="btn green button-submit" style="display: none;">
+                                                Klaar
+                                                <i class="fa fa-check"></i>
+                                            </a>
+<!--                                            <button type="reset" class="btn default">Annuleren</button>-->
+<!--                                            <button type="submit" name="submit_fHost" class="btn blue">Aanmaken</button>-->
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="tbox_UserGroup">Gebruikersgroep</label>
-                                            <div class="col-md-9">
-                                                <input type="text" id="tbox_UserGroup" class="form-control" value="<?php echo $newUserGroupName ?>" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="tbox_HostGroup">Host groep</label>
-                                            <div class="col-md-9">
-                                                <input type="text" id="tbox_HostGroup" class="form-control" value="<?php echo $newHostGroupName ?>" readonly>
-                                            </div>
-                                        </div>
-                                        <input name="code" type="hidden" id="hidden_code" value="<?php echo $customer->code ?>">
-                                    </div>
-                                    <div class="form-actions right">
-                                        <button type="reset" class="btn default">Annuleren</button>
-                                        <button type="submit" name="submit_fHost" class="btn blue">Aanmaken</button>
                                     </div>
                                 </form>
                             </div>
@@ -399,17 +462,17 @@ namespace WebServices;
                                                 <select name="cbox_HostGroup" id="cbox_HostGroup" class="form-control">
                                                     <option value=""></option>
                                                     <?php
-                                                        foreach ($zapi->GetHostGroups() as $item)
+                                                    foreach ($zapi->GetHostGroups() as $item)
+                                                    {
+                                                        if ($isNameSelected && $hostGroup->name == $item->name)
                                                         {
-                                                            if ($isNameSelected && $newHostGroupName == $item->name)
-                                                            {
-                                                                echo "<option selected value='" . $item->name . "'>" . $item->name . "</option>";
-                                                            }
-                                                            else
-                                                            {
-                                                                echo "<option value='" . $item->name . "'>" . $item->name . "</option>";
-                                                            }
+                                                            echo "<option selected value='" . $item->name . "'>" . $item->name . "</option>";
                                                         }
+                                                        else
+                                                        {
+                                                            echo "<option value='" . $item->name . "'>" . $item->name . "</option>";
+                                                        }
+                                                    }
                                                     ?>
                                                 </select>
                                             </div>
@@ -522,6 +585,7 @@ namespace WebServices;
         <script src="../../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
         <script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <script src="../../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="../../assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
@@ -532,6 +596,7 @@ namespace WebServices;
         <script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
 
-        <script src="functions.new-customer.scripts.js" type="text/javascript"></script>
+        <script src="test.js" type="text/javascript"></script>
+        <script src="wizard.new-customer.scripts.js" type="text/javascript"></script>
     </body>
 </html>

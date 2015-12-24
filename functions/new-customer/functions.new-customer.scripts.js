@@ -191,13 +191,17 @@ $(document).ready(function()
                 digits: true
             }
         },
-        highlight: function(element)
+        highlight: function(e)
         {
-            $(element).closest(".form-group").addClass("has-error");
+            $(e).closest(".form-group").removeClass("has-success").addClass("has-error")
         },
-        unhighlight: function(element) //, errorClass, validClass
+        unhighlight: function(e)
         {
-            $(element).closest(".form-group").removeClass("has-error");
+            $(e).closest(".form-group").removeClass("has-error")
+        },
+        success: function(e)
+        {
+            e.addClass("valid").closest(".form-group").removeClass("has-error").addClass("has-success")
         },
         submitHandler: function(form)
         {

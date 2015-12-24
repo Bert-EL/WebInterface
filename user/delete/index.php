@@ -9,9 +9,9 @@
 
 namespace WebServices;
 
-    require_once dirname(dirname(__DIR__)) . '/classes/ZabbixAPI.php';
-    require_once dirname(dirname(__DIR__)) . '/classes/CustomerParser.php';
-    require_once dirname(dirname(__DIR__)) . '/classes/NewCustomer.php';
+    require_once dirname(dirname(__DIR__)) . '/include/ZabbixAPI.php';
+    require_once dirname(dirname(__DIR__)) . '/include/CustomerParser.php';
+    require_once dirname(dirname(__DIR__)) . '/include/NewCustomer.php';
 
     $zapi = new ZabbixAPI();
     $zapi->Authenticate();
@@ -62,8 +62,10 @@ namespace WebServices;
 
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
+
             <!-- BEGIN HEADER INNER -->
             <div class="page-header-inner ">
+
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="../../">
@@ -71,6 +73,7 @@ namespace WebServices;
                     <div class="menu-toggler sidebar-toggler"></div>
                 </div>
                 <!-- END LOGO -->
+
                 <!-- BEGIN RESPONSIVE MENU TOGGLER -->
                 <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
                 <!-- END RESPONSIVE MENU TOGGLER -->
@@ -102,8 +105,10 @@ namespace WebServices;
                     </ul>
                 </div>
                 <!-- END TOP NAVIGATION MENU -->
+
             </div>
             <!-- END HEADER INNER -->
+
         </div>
         <!-- END HEADER -->
 

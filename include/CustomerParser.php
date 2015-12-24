@@ -9,9 +9,44 @@
 
 namespace WebServices
 {
+    /**
+     * Class CustomerSettings
+     *
+     * Contains default settings for the customer.
+     *
+     * @package WebServices
+     */
+    abstract  class CustomerSettings
+    {
+        #region Constants
+
+        /**
+         * Contains the default password.
+         */
+        const DEFAULT_PASSWORD = "Temp*123";
+
+        #endregion
+    }
+
+    /**
+     * Class CustomerParser
+     *
+     * Read and process the XML file that contains the paying monitoring customers.
+     *
+     * @package WebServices
+     */
     class CustomerParser
     {
+        #region Protected Fields
+
+        /**
+         * @var     \SimpleXMLElement               The XML document that contains the paying monitoring customers.
+         */
         protected $xml;
+
+        #endregion
+
+        #region Constructor
 
         /**
          * Load the XML containing the monitoring customer information.
@@ -22,6 +57,10 @@ namespace WebServices
         {
             $this->xml = simplexml_load_file("http://172.16.252.1/zabbix/ZabbixCustomers.xml");
         }
+
+        #endregion
+
+        #region Public Methods
 
         /**
          * Evaluate whether the XML has a valid structure.
@@ -128,8 +167,17 @@ namespace WebServices
 
             return $isRecent;
         }
+
+        #endregion
     }
 
+    /**
+     * Class Customer
+     *
+     * Provides an object to the user that represents a customer with a name and code.
+     *
+     * @package WebServices
+     */
     class Customer
     {
         #region Public Fields
@@ -171,6 +219,3 @@ namespace WebServices
         #endregion
     }
 }
-
-
-
