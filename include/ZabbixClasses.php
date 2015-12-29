@@ -40,8 +40,6 @@ namespace WebServices
          *
          * Initialize a new instance of the BaseItem class.
          *
-         * @param   string $name The name of the item.
-         * @param   int    $ID   The ID of the item.
          */
         public function __construct()
         {
@@ -49,8 +47,13 @@ namespace WebServices
 //            $this->id = $ID;
         }
 
-        #endregion
-
+        /**
+         * Initialze a new instance of the BaseItem class with a name and ID.
+         *
+         * @param   string      $name           The name of the base item.
+         * @param   int         $ID             The ID of the base item.
+         * @return  static
+         */
         public static function WithNameAndID($name, $ID)
         {
             $instance = new static();
@@ -59,6 +62,8 @@ namespace WebServices
 
             return $instance;
         }
+
+        #endregion
     }
 
     /**
@@ -75,12 +80,9 @@ namespace WebServices
          *
          * Initialize a new instance of the User class.
          *
-         * @param   string $name The name of the user.
-         * @param   int    $ID   The ID of the user.
          */
         public function __construct()
         {
-//            parent::__construct($name, $ID);
             parent::__construct();
         }
     }
@@ -99,12 +101,9 @@ namespace WebServices
          *
          * Initialize a new instance of the UserGroup class.
          *
-         * @param   string $name The name of the usergroup.
-         * @param   int    $ID   The ID of the usergroup.
          */
         public function __construct()
         {
-//            parent::__construct($name, $ID);
             parent::__construct();
         }
     }
@@ -123,12 +122,9 @@ namespace WebServices
          *
          * Initialize a new instance of the Host class.
          *
-         * @param   string $name The name of the Host.
-         * @param   int    $ID   The ID of the Host.
          */
         public function __construct()
         {
-//            parent::__construct($name, $ID);
             parent::__construct();
         }
     }
@@ -147,12 +143,9 @@ namespace WebServices
          *
          * Initialize a new instance of the HostGroup class.
          *
-         * @param   string $name The name of the hostgroup.
-         * @param   int    $ID   The ID of the hostgroup.
          */
         public function __construct()
         {
-//            parent::__construct($name, $ID);
             parent::__construct();
         }
     }
@@ -171,12 +164,9 @@ namespace WebServices
          *
          * Initialize a new instance of the Template class.
          *
-         * @param   string $name The name of the template.
-         * @param   int    $ID   The ID of the template.
          */
         public function __construct()
         {
-//            parent::__construct($name, $ID);
             parent::__construct();
         }
     }
@@ -195,12 +185,9 @@ namespace WebServices
          *
          * Initialize a new instance of the Template class.
          *
-         * @param   string $name The name of the template.
-         * @param   int    $ID   The ID of the template.
          */
         public function __construct()
         {
-            //            parent::__construct($name, $ID);
             parent::__construct();
         }
     }

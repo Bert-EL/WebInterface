@@ -46,7 +46,9 @@
         <link rel="shortcut icon" href="../favicon.ico" /> </head>
     <!-- END HEAD -->
 
+    <!-- BEGIN BODY -->
     <body class=" login">
+
         <!-- BEGIN LOGO -->
         <div class="logo">
             <a href="../">
@@ -54,10 +56,12 @@
             </a>
         </div>
         <!-- END LOGO -->
+
         <!-- BEGIN LOGIN -->
         <div class="content">
+
             <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="../index.php" method="post">
+            <form class="login-form" action="../" method="post">
                 <h3 class="form-title font-green">Aanmelden</h3>
                 <div class="alert alert-danger display-hide">
                     <button class="close" data-close="alert"></button>
@@ -66,16 +70,17 @@
                 <div class="form-group">
                     <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                     <label class="control-label visible-ie8 visible-ie9">Gebruikersnaam</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Gebruikersnaam" name="username" /> </div>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Gebruikersnaam" name="username" required>
+                </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Wachtwoord</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Wachtwoord" name="password" /> </div>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Wachtwoord" name="password" required>
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn green uppercase">Login</button>
                     <label class="rememberme check">
                         <input type="checkbox" name="remember" value="1" />Onthouden</label>
                         <a href="javascript:;" class="forget-password popovers" data-container="body" data-content="Contacteer Electro-Line Support op +32 (0)9/380 38 39">Wachtwoord vergeten?</a>
-<!--                    <a href="javascript:;" class="forget-password" id="forget-password">Wachtwoord vergeten?</a>-->
                 </div>
 <!--                <div id="hidden-info">-->
 <!--                    <br/>-->
@@ -89,8 +94,10 @@
             <!-- END LOGIN FORM -->
 
         </div>
+        <!-- END LOGIN -->
 
         <div class="copyright"> 2015 © Electro-Line. Monitoring Portal. </div>
+
         <!--[if lt IE 9]>
         <script src="../assets/global/plugins/respond.min.js"></script>
         <script src="../assets/global/plugins/excanvas.min.js"></script>
@@ -123,5 +130,8 @@
 
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->
+
     </body>
+    <!-- END BODY -->
+
 </html>

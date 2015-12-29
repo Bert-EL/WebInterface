@@ -10,6 +10,8 @@ namespace WebServices;
 
     var_dump($_REQUEST);
 
+    $_REQUEST["username"] = "Developer";
+
     if (!isset($_REQUEST["username"]) || !isset($_REQUEST["password"]) || !$zapi->AuthenticateUser($_REQUEST["username"], $_REQUEST["password"]))
     {
 //        header("Location: /projects/WebInterface/Authentication/index.php");
@@ -61,11 +63,15 @@ namespace WebServices;
     </head>
     <!-- END HEAD -->
 
+    <!-- BEGIN BODY -->
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-fixed">
+
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
+
             <!-- BEGIN HEADER INNER -->
             <div class="page-header-inner ">
+
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="">
@@ -73,17 +79,20 @@ namespace WebServices;
                     <div class="menu-toggler sidebar-toggler"></div>
                 </div>
                 <!-- END LOGO -->
+
                 <!-- BEGIN RESPONSIVE MENU TOGGLER -->
                 <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
                 <!-- END RESPONSIVE MENU TOGGLER -->
+
                 <!-- BEGIN TOP NAVIGATION MENU -->
                 <div class="top-menu">
                     <ul class="nav navbar-nav pull-right">
+
                         <!-- BEGIN USER LOGIN DROPDOWN -->
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
                                 <img alt="" class="img-rounded" src="assets/layouts/layout/img/avatar.png" />
-                                <span class="username username-hide-on-mobile"><?php echo " User" ?></span>
+                                <span class="username username-hide-on-mobile"><?php echo $_REQUEST["username"]; ?></span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
@@ -98,11 +107,14 @@ namespace WebServices;
                             </ul>
                         </li>
                         <!-- END USER LOGIN DROPDOWN -->
+
                     </ul>
                 </div>
                 <!-- END TOP NAVIGATION MENU -->
+
             </div>
             <!-- END HEADER INNER -->
+
         </div>
         <!-- END HEADER -->
 
@@ -112,10 +124,13 @@ namespace WebServices;
 
         <!-- BEGIN CONTAINER -->
         <div class="page-container">
+
             <!-- BEGIN SIDEBAR -->
             <div class="page-sidebar-wrapper">
+
                 <!-- BEGIN SIDEBAR -->
                 <div class="page-sidebar navbar-collapse collapse">
+
                     <!-- BEGIN SIDEBAR MENU -->
                     <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
                         <li class="heading">
@@ -145,7 +160,7 @@ namespace WebServices;
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -159,17 +174,17 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -183,17 +198,17 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -207,17 +222,17 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -239,8 +254,10 @@ namespace WebServices;
                         </li>
                     </ul>
                     <!-- END SIDEBAR MENU -->
+
                 </div>
                 <!-- END SIDEBAR -->
+
             </div>
             <!-- END SIDEBAR -->
 
@@ -254,14 +271,18 @@ namespace WebServices;
                     <h3 class="page-title">Welkom</h3>
                     <!-- END PAGE TITLE-->
 
-                    <!-- END PAGE HEADER-->
+                    <!-- BEGIN CONTENT-->
                     <div class="note note-info">
                         <p>Uitleg over de monitoring tool en dat de Developer, namelijke Bert Delbaere, geen schuld treft.</p>
                     </div>
+                    <!-- END CONTENT -->
+
                 </div>
                 <!-- END CONTENT BODY -->
+
             </div>
             <!-- END CONTENT -->
+
         </div>
         <!-- END CONTAINER -->
 
@@ -301,5 +322,8 @@ namespace WebServices;
         <script src="assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
         <script src="assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
+
     </body>
+    <!-- END BODY -->
+
 </html>

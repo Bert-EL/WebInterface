@@ -9,6 +9,8 @@
 
 namespace WebServices
 {
+    require_once dirname(__FILE__) . "/ZabbixAPI.php";
+
     /**
      * Class CustomerSettings
      *
@@ -37,12 +39,17 @@ namespace WebServices
      */
     class CustomerParser
     {
-        #region Protected Fields
+        #region Private Fields
 
         /**
-         * @var     \SimpleXMLElement               The XML document that contains the paying monitoring customers.
+         * @var     ZabbixAPI                   An instance of the Zabbix API.
          */
-        protected $xml;
+        private $zapi;
+
+        /**
+         * @var     \SimpleXMLElement           The XML document that contains the paying monitoring customers.
+         */
+        private $xml;
 
         #endregion
 
@@ -55,6 +62,7 @@ namespace WebServices
          */
         public function __construct()
         {
+            $this->zapi = new ZabbixAPI();
             $this->xml = simplexml_load_file("http://172.16.252.1/zabbix/ZabbixCustomers.xml");
         }
 
@@ -83,9 +91,17 @@ namespace WebServices
 
             if ($this->IsValidXML())
             {
-                foreach ($this->xml->xpath("//customer") as $item)                                                                         // Ignore the parent node.
+                $existingGroups = $this->zapi->GetHostGroupNames();                                                         // Retrieve a list of existing host groups.
+
+                foreach ($this->xml->xpath("//customer") as $item)                                                          // Ignore the parent node.
                 {
-                    $customers[] = Customer::WithNameAndCode((string)$item->name, (int)$item->code);
+                    $customer = Customer::WithNameAndCode((string)$item->name, (int)$item->code);
+                    $formattedName = $this->zapi->FormatGroupName(NameType::HostGroup, $customer);
+
+                    if (array_search($formattedName, $existingGroups) === false)
+                    {
+                        $customers[] = $customer;                                                                           // Only added the non-existing host groups to the return array.
+                    }
                 }
             }
 

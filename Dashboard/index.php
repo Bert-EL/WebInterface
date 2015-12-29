@@ -48,12 +48,15 @@
     </head>
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-fixed">
+    <!-- BEGIN BODY -->
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-closed">
 
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
+
             <!-- BEGIN HEADER INNER -->
             <div class="page-header-inner ">
+
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="../">
@@ -61,9 +64,11 @@
                     <div class="menu-toggler sidebar-toggler"></div>
                 </div>
                 <!-- END LOGO -->
+
                 <!-- BEGIN RESPONSIVE MENU TOGGLER -->
                 <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
                 <!-- END RESPONSIVE MENU TOGGLER -->
+
                 <!-- BEGIN TOP NAVIGATION MENU -->
                 <div class="top-menu">
                     <ul class="nav navbar-nav pull-right">
@@ -76,12 +81,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
-                                    <a href="page_user_lock_1.html">
-                                        <i class="icon-lock"></i> Lock Screen </a>
+                                    <a href=""><i class="icon-lock"></i> Lock Screen </a>
                                 </li>
                                 <li>
-                                    <a href="page_user_login_1.html">
-                                        <i class="icon-key"></i> Log Out </a>
+                                    <a href=""><i class="icon-key"></i> Log Out </a>
                                 </li>
                             </ul>
                         </li>
@@ -105,7 +108,7 @@
                 <!-- BEGIN SIDEBAR -->
                 <div class="page-sidebar navbar-collapse collapse">
                     <!-- BEGIN SIDEBAR MENU -->
-                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                    <ul class="page-sidebar-menu page-header-fixed page-sidebar-menu-closed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
                         <li class="heading">
                             <h3 class="uppercase">Monitoring</h3>
                         </li>
@@ -133,7 +136,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="../wizard/new-customer/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -147,17 +150,17 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -171,17 +174,17 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -195,17 +198,17 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -219,7 +222,7 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="../functions/new-customer/" class="nav-link">
+                                    <a href="../wizard/new-customer/" class="nav-link">
                                         <span class="title">Nieuwe klant aanmaken</span>
                                     </a>
                                 </li>
@@ -286,4 +289,6 @@
 
         <script src="dashboard.script.js" type="text/javascript"></script>
     </body>
+    <!-- END BODY -->
+
 </html>

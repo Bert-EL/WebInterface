@@ -681,14 +681,14 @@ namespace WebServices
          * Evaluate if a host group exists.
          *
          * @link    https://www.zabbix.com/documentation/2.2/manual/api/reference/hostgroup/exists
-         * @param   string      $hostGroupName  The name of the host group.
-         * @return  bool                        True if the host group exist; otherwise false.
+         * @param   string      $hostGroupName      The name of the host group.
+         * @return  bool                            True if the host group exist; otherwise false.
          */
         public function DoesHostGroupExist($hostGroupName)
         {
             $doesExist = true;
 
-            if (is_string($hostGroupName))
+            if (is_string($hostGroupName) || (is_array($hostGroupName) && count($hostGroupName) > 0))
             {
                 if ($this->IsValidAuthToken())
                 {
@@ -703,6 +703,33 @@ namespace WebServices
             }
 
             return $doesExist;
+        }
+
+        /**
+         * Evaluate if the passed host group names exists.
+         *
+         * @param   array       $hostGroupNames     A collection of host group names that'll be evaluated.
+         * @return  array                           The names of the host groups that do exist.
+         */
+        public function DoesHostGroupsExists($hostGroupNames)
+        {
+            $results = array();
+
+            if (is_array($hostGroupNames))
+            {
+                $existingGroups = $this->GetHostGroups();
+
+                foreach ($existingGroups as $name)
+                {
+                    if (in_array($name->name, $hostGroupNames))
+                    {
+                        $results[] = $name->name;
+                        break;
+                    }
+                }
+            }
+
+            return $results;
         }
 
         /**
@@ -737,7 +764,7 @@ namespace WebServices
         }
 
         /**
-         * Retrieve host groups according to the passed parameters.
+         * Retrieve the existing host groups.
          *
          * @link    https://www.zabbix.com/documentation/2.2/manual/api/reference/hostgroup/get
          * @return  array                           A collection of host groups and related host group IDs if successful; otherwise an empty list.
@@ -759,12 +786,29 @@ namespace WebServices
                 {
                     foreach ($response["result"] as $item)
                     {
-                        $hostgroups[] = new HostGroup($item["name"], $item["groupid"]);
+                        $hostgroups[] = HostGroup::WithNameAndID($item["name"], $item["groupid"]);
                     }
                 }
             }
 
             return $hostgroups;
+        }
+
+        /**
+         * Retrieve the names of the existing host groups.
+         *
+         * @return  array                           A collection of host group names if successfull; otherwise an empty array.
+         */
+        public function GetHostGroupNames()
+        {
+            $names = array();
+
+            foreach ($this->GetHostGroups() as $item)
+            {
+                $names[] = $item->name;
+            }
+
+            return $names;
         }
 
         /**

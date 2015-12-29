@@ -110,7 +110,22 @@ namespace WebServices
 
         public function __construct($group)
         {
-            $this->name = $group;
+            if (is_string($group))
+            {
+                $this->name = $group;
+            }
+            elseif (is_array($group) && count($group) > 0)
+            {
+                $this->name = array();
+
+                foreach ($group as $item)
+                {
+                    if (is_string($item))
+                    {
+                        $this->name[] = $item;
+                    }
+                }
+            }
         }
     }
 

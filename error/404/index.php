@@ -1,19 +1,10 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: developer
- * Date: 15/12/2015
- * Time: 9:29
+ * Date: 28/12/2015
+ * Time: 13:15
  */
-
-namespace WebServices;
-
-    require_once dirname(dirname(__DIR__)) . '/include/ZabbixAPI.php';
-    require_once dirname(dirname(__DIR__)) . '/include/CustomerParser.php';
-
-    $zapi = new ZabbixAPI();
-    $zapi->Authenticate();
 ?>
 
 <!DOCTYPE html>
@@ -34,25 +25,29 @@ namespace WebServices;
 
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
 
         <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="../../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="../../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
 
+        <!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="assets/pages/css/error.min.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL STYLES -->
+
         <!-- BEGIN THEME LAYOUT STYLES -->
-        <link href="../../assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="../../assets/layouts/layout/css/themes/light.min.css" rel="stylesheet" type="text/css" id="style_color" />
-        <link href="../../assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/layouts/layout/css/themes/light.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
 
-        <link rel="shortcut icon" href="../../favicon.ico" />
+        <link rel="shortcut icon" href="favicon.ico"/>
     </head>
     <!-- END HEAD -->
 
@@ -67,8 +62,8 @@ namespace WebServices;
 
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="../../">
-                        <img src="../../assets/layouts/layout/img/logo.png" alt="logo" class="logo-default"/></a>
+                    <a href="">
+                        <img src="assets/layouts/layout/img/logo.png" alt="logo" class="logo-default"/></a>
                     <div class="menu-toggler sidebar-toggler"></div>
                 </div>
                 <!-- END LOGO -->
@@ -84,16 +79,18 @@ namespace WebServices;
                         <!-- BEGIN USER LOGIN DROPDOWN -->
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
-                                <img alt="" class="img-rounded" src="../../assets/layouts/layout/img/avatar.png" />
+                                <img alt="" class="img-rounded" src="assets/layouts/layout/img/avatar.png" />
                                 <span class="username username-hide-on-mobile"><?php echo " User" ?></span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
-                                    <a href=""><i class="icon-lock"></i> Lock Screen </a>
+                                    <a href="">
+                                        <i class="icon-lock"></i> Lock Screen </a>
                                 </li>
                                 <li>
-                                    <a href=""><i class="icon-key"></i> Log Out </a>
+                                    <a href="">
+                                        <i class="icon-key"></i> Log Out </a>
                                 </li>
                             </ul>
                         </li>
@@ -123,37 +120,35 @@ namespace WebServices;
                 <div class="page-sidebar navbar-collapse collapse">
 
                     <!-- BEGIN SIDEBAR MENU -->
-                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="100" style="padding-top: 20px">
+                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
                         <li class="heading">
                             <h3 class="uppercase">Monitoring</h3>
                         </li>
                         <li class="nav-item">
-                            <a href="../../dashboard/" class="nav-link">
+                            <a href="dashboard/" class="nav-link">
                                 <i class="fa fa-dashboard"></i>
                                 <span class="title">Dashboard</span>
                             </a>
                         </li>
-                        <li class="nav-item active open">
+                        <li class="nav-item">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="fa fa-user"></i>
                                 <span class="title">Gebruikers</span>
-                                <span class="selected"></span>
-                                <span class="arrow open"></span>
+                                <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="../create/" class="nav-link">
+                                    <a href="user/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
-                                <li class="nav-item active open">
-                                    <a href="" class="nav-link">
+                                <li class="nav-item">
+                                    <a href="user/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
-                                        <span class="selected"></span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../../wizard/new-customer/" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -239,7 +234,7 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="wizard/new-customer/" class="nav-link">
                                         <span class="title">Nieuwe klant aanmaken</span>
                                     </a>
                                 </li>
@@ -260,58 +255,34 @@ namespace WebServices;
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
 
-                    <!-- BEGIN PAGE TITLE-->
-                    <h3 class="page-title">Verwijderen van een gebruiker</h3>
-                    <!-- END PAGE TITLE-->
+                    <!-- PAGE CONTENT -->
+                    <div class="row">
+                        <div class="col-md-12 page-404">
+                            <div class="number font-green"> 404 </div>
+                            <div class="details">
+                                <h3>Oops! You're lost.</h3>
+                                <p>
+                                    We kunnen de pagina die u zoek niet vinden.<br/><br/>
 
-                    <!-- BEGIN CONTENT-->
-                    <div class="note note-info">
-                        <p>
-                            Gebruik deze pagina om een gebruiker uit de monitoring omgeving te verwijderen.
-                        </p>
-                    </div>
-                    <!-- END CONTENT -->
+                                    De opgevraagde pagina bestaat mogelijks niet <br/>
+                                    of is op dit ogenblik onbeschikbaar.<br/><br/>
 
-                    <!-- BEGIN FORMS -->
-                    <div class="col-md-6">
-
-                        <!-- BEGIN USER(GROUP) & HOSTGROUP SETTINGS -->
-                        <div class="portlet light bordered">
-                            <div class="portlet-title">
-                                <div class="caption font-red-sunglo">
-                                    <i class="icon-user font-red-sunglo"></i>
-                                    <span class="caption-subject bold uppercase">Gebruikers</span>
-                                </div>
-                            </div>
-                            <div class="portlet-body form">
-                                <form class="form-horizontal" role="form" id="" action="" method="post">
-                                    <div class="form-body">
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="cbox_User">Gebruiker</label>
-                                            <div class="col-md-9">
-                                                <select name="name" class="form-control" id="cbox_User">
-                                                    <option value=""></option>
-                                                    <?php
-                                                        foreach ($zapi->GetUsers() as $item)
-                                                        {
-                                                            echo "<option value='" . $item->name . "'>" . $item->name . "</option>";
-                                                        }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-actions right">
-                                        <button type="reset" class="btn default">Annuleren</button>
-                                        <button name="submit_Delete" class="btn red-mint uppercase btn-large">Verwijderen</button>
+                                    <a href="index.php"> Ga terug </a> of gebruik de onderstaande zoekbalk.
+                                </p>
+                                <form action="">
+                                    <div class="input-group input-medium">
+                                        <input type="text" class="form-control" placeholder="keyword...">
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn green">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <!-- END USER(GROUP) & HOSTGROUP SETTINGS-->
-
                     </div>
-                    <!-- END FORMS -->
+                    <!-- END CONTENT -->
 
                 </div>
                 <!-- END CONTENT BODY -->
@@ -324,8 +295,8 @@ namespace WebServices;
 
         <!-- BEGIN FOOTER -->
         <div class="page-footer">
-            <div class="page-footer-inner"> 2015 &copy;
-                <a href="http://www.electro-line.be/" target="_blank">Electro-Line</a>
+            <div class="page-footer-inner">
+                2015 &copy; <a href="http://www.electro-line.be/" target="_blank">Electro-Line</a>
             </div>
             <div class="scroll-to-top">
                 <i class="icon-arrow-up"></i>
@@ -334,28 +305,29 @@ namespace WebServices;
         <!-- END FOOTER -->
 
         <!--[if lt IE 9]>
-        <script src="../../assets/global/plugins/respond.min.js"></script>
-        <script src="../../assets/global/plugins/excanvas.min.js"></script>
+        <script src="assets/global/plugins/respond.min.js"></script>
+        <script src="assets/global/plugins/excanvas.min.js"></script>
         <![endif]-->
+
         <!-- BEGIN CORE PLUGINS -->
-        <script src="../../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-        <script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
 
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
-        <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
+        <script src="assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
 
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
-        <script src="../../assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
-        <script src="../../assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
-        <script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+        <script src="assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
+        <script src="assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
+        <script src="assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
 
     </body>
