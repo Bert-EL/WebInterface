@@ -57,8 +57,8 @@ namespace WebServices
         public static function WithNameAndID($name, $ID)
         {
             $instance = new static();
-            $instance->name = $name;
-            $instance->id = $ID;
+            $instance->name = (string)$name;
+            $instance->id = (int)$ID;
 
             return $instance;
         }

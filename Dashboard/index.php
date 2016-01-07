@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: developer
@@ -72,6 +73,7 @@
                 <!-- BEGIN TOP NAVIGATION MENU -->
                 <div class="top-menu">
                     <ul class="nav navbar-nav pull-right">
+
                         <!-- BEGIN USER LOGIN DROPDOWN -->
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
@@ -89,11 +91,14 @@
                             </ul>
                         </li>
                         <!-- END USER LOGIN DROPDOWN -->
+
                     </ul>
                 </div>
                 <!-- END TOP NAVIGATION MENU -->
+
             </div>
             <!-- END HEADER INNER -->
+
         </div>
         <!-- END HEADER -->
 
@@ -103,10 +108,13 @@
 
         <!-- BEGIN CONTAINER -->
         <div class="page-container">
+
             <!-- BEGIN SIDEBAR -->
             <div class="page-sidebar-wrapper">
+
                 <!-- BEGIN SIDEBAR -->
                 <div class="page-sidebar navbar-collapse collapse">
+
                     <!-- BEGIN SIDEBAR MENU -->
                     <ul class="page-sidebar-menu page-header-fixed page-sidebar-menu-closed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
                         <li class="heading">
@@ -131,12 +139,12 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../user/delete" class="nav-link">
+                                    <a href="../user/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../wizard/new-customer/" class="nav-link">
+                                    <a href="../user/overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -150,17 +158,17 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../users/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../users/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../users/overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -174,17 +182,17 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../host/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../host/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../host/overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -198,17 +206,17 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../hosts/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../hosts/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../hosts/overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -223,15 +231,22 @@
                             <ul class="sub-menu">
                                 <li class="nav-item">
                                     <a href="../wizard/new-customer/" class="nav-link">
-                                        <span class="title">Nieuwe klant aanmaken</span>
+                                        <span class="title">Klant aanmaken</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../wizard/delete-customer/" class="nav-link">
+                                        <span class="title">Klant verwijderen</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                     <!-- END SIDEBAR MENU -->
+
                 </div>
                 <!-- END SIDEBAR -->
+
             </div>
             <!-- END SIDEBAR -->
 
@@ -240,13 +255,13 @@
 
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content navigation">
-
                     <iframe id="monitoringboard"></iframe>
-
                 </div>
                 <!-- END CONTENT BODY -->
+
             </div>
             <!-- END CONTENT -->
+
         </div>
         <!-- END CONTAINER -->
 
@@ -288,6 +303,7 @@
         <!-- END THEME LAYOUT SCRIPTS -->
 
         <script src="dashboard.script.js" type="text/javascript"></script>
+
     </body>
     <!-- END BODY -->
 

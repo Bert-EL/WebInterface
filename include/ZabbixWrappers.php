@@ -38,24 +38,200 @@ namespace WebServices
 
     #endregion
 
-    #region Request Classes
+    #region User Requests
 
-    class ZabbixRequest
+    class ZabbixAuthRequest
     {
+        public $user;
+        public $password;
+
+        public function __construct($username, $password)
+        {
+            $this->user = $username;
+            $this->password = $password;
+        }
+    }
+
+    class ZabbixUserCreateRequest
+    {
+        public $alias;
+        public $passwd;
+        public $usrgrps;
+        public $autologin;
+        public $autologout;
+        public $type;
+        public $name;
+        public $surname;
+        public $lang;
+
         public function __construct()
         { }
     }
 
-    #region Host Request Classes
+    class ZabbixUserGetRequest
+    {
+        public $output;
+        public $usrgrpids;
 
-    class ZabbixHostCreateRequest extends ZabbixRequest
+        /**
+         * Filter settings for the user GET request.
+         *
+         * @var ZabbixUserGetFilter|null
+         */
+        public $filter;
+    }
+
+    class ZabbixUserGetFilter
+    {
+        public $alias;
+        public $userid;
+
+        public function __construct()
+        {   }
+
+        public function FilterOnAlias($alias)
+        {
+            if (is_string($alias))
+            {
+                $this->alias = $alias;
+            }
+        }
+
+        public function FilterOnUserID($id)
+        {
+            if (is_int($id))
+            {
+                $this->userid = $id;
+            }
+        }
+    }
+
+    #endregion
+
+    #region UserGroup Requests
+
+    /**
+     * Class ZabbixUserGroupGetRequest
+     *
+     * @package WebServices
+     */
+    class ZabbixUserGroupGetRequest
+    {
+        public $status;
+        public $output;
+        public $usrgrpids;
+
+        /**
+         * Filter settings for the UserGroup GET request.
+         *
+         * @var ZabbixUserGroupGetFilter|null
+         */
+        public $filter;
+
+        public function FilterOnID($id)
+        {
+            if (is_int($id))
+            {
+                $this->usrgrpids = $id;
+            }
+            elseif (is_array($id))
+            {
+                $usrgrpids = array();
+
+                foreach ($id as $item)
+                {
+                    if (is_int($item))
+                    {
+                        $usrgrpids[] = $item;
+                    }
+                }
+            }
+        }
+    }
+
+    class ZabbixUserGroupGetFilter
+    {
+        public $name;
+
+        public function __construct()
+        {   }
+
+        public function FilterOnName($alias)
+        {
+            if (is_string($alias))
+            {
+                $this->name = $alias;
+            }
+        }
+    }
+
+    class ZabbixUserGroupGetObjectRequest
+    {
+        public $name;
+
+        public  function __construct($userGroupName)
+        {
+            $this->name = $userGroupName;
+        }
+    }
+
+    class ZabbixUserGroupCreateRequest
+    {
+        public $name;
+        public $rights;
+        public $userids;
+    }
+
+    class ZabbixUserGroupUpdateRequest
+    {
+        public $usrgrpid;
+        public $rights = array("permission" => "", "id" => "");
+    }
+
+    #endregion
+
+    #region Host Requests
+
+    class ZabbixHostGetRequest
+    {
+        public $hostids;
+        public $output;
+        public $selectInterfaces;
+        public $filter;
+        public $groupids;
+
+        public function __construct()
+        { }
+
+        public function FilterOnID($id)
+        {
+            if (is_int($id))
+            {
+                $this->hostids = $id;
+            }
+            elseif (is_array($id))
+            {
+                $hostids = array();
+
+                foreach ($id as $item)
+                {
+                    if (is_int($item))
+                    {
+                        $hostids[] = $item;
+                    }
+                }
+            }
+        }
+    }
+
+    class ZabbixHostCreateRequest
     {
         public $host;
         public $interfaces;
         public $groups = array("groupid" => "");
     }
 
-    class ZabbixHostDoesExistRequest extends ZabbixRequest
+    class ZabbixHostDoesExistRequest
     {
         public $host;
         public $nodeids = array();
@@ -79,32 +255,59 @@ namespace WebServices
         }
     }
 
-    #endregion
-
-    class ZabbixAuthRequest extends ZabbixRequest
+    class ZabbixHostGetFilter
     {
-        public $user;
-        public $password;
+        public $host;
 
-        public function __construct($username, $password)
+        public function __construct()
+        {   }
+
+        public function FilterOnName($name)
         {
-            $this->user = $username;
-            $this->password = $password;
+            if (is_string($name))
+            {
+                $this->host = $name;
+            }
         }
     }
 
-    class ZabbixHostRequest extends ZabbixRequest
+    #endregion
+
+    #region HostGroup Requests
+
+    class ZabbixHostGroupRequest
     {
-        public $hostids;
+        public $name;
+        public $groupids;
         public $output;
-        public $selectInterfaces;
         public $filter;
+
+        public function __construct($name)
+        {
+            $this->name = $name;
+        }
+    }
+
+    class ZabbixHostGroupGetObjectRequest
+    {
+        public $name;
+
+        public function __construct($hostGroupName)
+        {
+            $this->name = $hostGroupName;
+        }
+    }
+
+    class ZabbixHostGroupGetRequest
+    {
+        public $groupids;
+        public $output;
 
         public function __construct()
         { }
     }
 
-    class ZabbixGroupDoesExist extends ZabbixRequest
+    class ZabbixGroupDoesExist
     {
         public $name;
 
@@ -129,110 +332,95 @@ namespace WebServices
         }
     }
 
-    class ZabbixHostGroupRequest extends ZabbixRequest
+    class ZabbixHostGroupGetFilter
     {
         public $name;
-//        public $groupids;
-//        public $output;
-
-        public function __construct($name)
-        {
-            $this->name = $name;
-        }
-    }
-
-    class ZabbixUserCreateRequest extends ZabbixRequest
-    {
-        public $alias;
-        public $passwd;
-        public $usrgrps;
-        public $autologin;
-        public $autologout;
-        public $type;
-        public $name;
-        public $surname;
-        public $lang;
+        public $groupid;
 
         public function __construct()
-        { }
-    }
+        {   }
 
-    class ZabbixUserGetRequest extends ZabbixRequest
-    {
-        public $output;
-    }
-
-    class ZabbixUserGroupGetRequest extends ZabbixRequest
-    {
-        public $status;
-        public $output;
-    }
-
-    class ZabbixHostGroupGetObjectRequest extends ZabbixRequest
-    {
-        public $name;
-
-        public function __construct($hostGroupName)
+        public function FilterOnName($name)
         {
-            $this->name = $hostGroupName;
+            if (is_string($name))
+            {
+                $this->name = $name;
+            }
+        }
+
+        public function FilterOnID($id)
+        {
+            if (is_int($id))
+            {
+                $this->groupid = $id;
+            }
         }
     }
 
-    class ZabbixUserGroupGetObjectRequest extends ZabbixRequest
-    {
-        public $name;
+    #endregion
 
-        public  function __construct($userGroupName)
-        {
-            $this->name = $userGroupName;
-        }
-    }
+    #region Template Requests
 
-    class ZabbixUserGroupCreateRequest extends ZabbixRequest
-    {
-        public $name;
-        public $rights;
-        public $userids;
-    }
-
-    class ZabbixUserGroupUpdateRequest extends ZabbixRequest
-    {
-        public $usrgrpid;
-        public $rights = array("permission" => "", "id" => "");
-    }
-
-    class ZabbixHostGroupGetRequest extends ZabbixRequest
-    {
-        public $groupids;
-        public $output;
-
-        public function __construct()
-        { }
-    }
-
-    class ZabbixTemplateGetRequest extends ZabbixRequest
+    class ZabbixTemplateGetRequest
     {
         public $hostids;
         public $output;
+        public $filter;
+        public $templateids;
 
         public function  __construct()
         { }
+
+        public function FilterOnID($id)
+        {
+            if (is_int($id))
+            {
+                $this->templateids = (string)$id;
+            }
+            elseif (is_array($id))
+            {
+                $templateids = array();
+
+                foreach ($id as $item)
+                {
+                    if (is_int($item))
+                    {
+                        $templateids[] = (string)$item;
+                    }
+                }
+            }
+        }
     }
 
-    class ZabbixHostTemplateUpdateRequest extends ZabbixRequest
+    class ZabbixTemplateGetFilter
     {
-        public $hostid;
-        public $templates;
+        public $host = array();
 
-        public function  __construct()
-        { }
+        public function __construct($arg)
+        {
+            if (is_array($arg))
+            {
+                foreach ($arg as $item)
+                {
+                    if (is_string($item))
+                    {
+                        $this->host[] = $item;
+                    }
+                }
+            }
+            elseif (is_string($arg))
+            {
+                $this->host[] = $arg;
+            }
+        }
     }
 
-    class ZabbixTemplateCreateRequest extends ZabbixRequest
+    class ZabbixTemplateCreateRequest
     {
         public $host;
         public $groups = null;
         public $hosts = null;
+        public $name;
 
         /**
          * Set the host that'll be linked to the template.
@@ -243,7 +431,11 @@ namespace WebServices
         {
             $this->hosts = array();
 
-            if (is_array($hosts) && count($hosts) > 0)
+            if (is_int($hosts))
+            {
+                $this->hosts[] = new ZabbixTemplateCreateHosts($hosts);
+            }
+            elseif (is_array($hosts) && count($hosts) > 0)
             {
                 foreach ($hosts as $item)
                 {
@@ -261,7 +453,11 @@ namespace WebServices
         {
             $this->groups = array();
 
-            if (is_array($groups) && count($groups) > 0)
+            if (is_int($groups))
+            {
+                $this->groups[] = new ZabbixTemplateCreateGroups($groups);
+            }
+            elseif (is_array($groups) && count($groups) > 0)
             {
                 foreach ($groups as $item)
                 {
@@ -271,8 +467,6 @@ namespace WebServices
         }
     }
 
-    #endregion
-
     class ZabbixTemplateCreateGroups
     {
         public $groupid;
@@ -281,7 +475,7 @@ namespace WebServices
         {
             if (is_int($id))
             {
-                $this->groupid = (string)$id;
+                $this->groupid = $id;
             }
         }
     }
@@ -298,6 +492,19 @@ namespace WebServices
             }
         }
     }
+
+    class ZabbixHostTemplateUpdateRequest
+    {
+        public $hostid;
+        public $templates;
+
+        public function  __construct()
+        { }
+    }
+
+    #endregion
+
+    #region Action Requests
 
     class ZabbixActionCreateRequest
     {
@@ -445,11 +652,33 @@ namespace WebServices
 //        public $selectOperations = "extend";
         public $selectFilter = "extend";
         public $selectConditions = "extend";
+
+        /**
+         * @var ZabbixActionGetFilter
+         */
         public $filter;
 
         public function __construct()
+        {   }
+
+        public function FilterOnID($id)
         {
-            $this->filter = new ZabbixActionGetFilter();
+            if (is_int($id))
+            {
+                $this->actionids = (string)$id;
+            }
+            elseif (is_array($id))
+            {
+                $actionids = array();
+
+                foreach ($id as $item)
+                {
+                    if (is_int($item))
+                    {
+                        $actionids[] = (string)$item;
+                    }
+                }
+            }
         }
     }
 
@@ -465,132 +694,32 @@ namespace WebServices
          *      2 - event created by active agent auto-registration;
          *      3 - internal event.
          */
-        public $eventsource = 0;
-    }
+        public $eventsource;
 
-    class ZabbixUserLoginResponse
-    {
-        public $jsonrpc;
-        public $result;
-        public $id;
+        public $name;
 
-        public function __construct()
-        { }
-    }
-
-    class ZabbixHostCreateResponse
-    {
-        public $jsonrpc;
-        public $result;
-        public $id = array("hostids" => "");
-    }
-
-    class ZabbixHostGroupCreateResponse
-    {
-        public $jsonrpc;
-        public $result = array("groupsids" => "");
-        public $id;
-    }
-
-    class ZabbixHostGetResponse
-    {
-        public $jsonrpc;
-        public $result = array("host" => "", "hostid" => "");
-        public $id;
-    }
-
-    class ZabbixHostGroupGetResponse
-    {
-        public $jsonrpc;
-        public $result = array("groupid" => "", "name" => "");
-        public $id;
-    }
-
-    class ZabbixUserGroupGetResponse
-    {
-        public $jsonrpc;
-        public $result = array("usrgrpid" => "", "name" => "", "gui_access" => "", "users_status" => "", "debug_mode" => "");
-        public $id;
-    }
-
-    class ZabbixUserCreateResponse
-    {
-        public $jsonrpc;
-        public $result = array("userids" => "");
-        public $id;
-    }
-
-    class ZabbixUserGroupCreateResponse
-    {
-        public $jsonrpc;
-        public $result = array("usrgrpids" => "");
-        public $id;
-    }
-
-    class ZabbixHostGroupGetObjectResponse
-    {
-        public $jsonrpc;
-        public $result = array("groupid" => "", "name" => "", "internal" => "");
-        public $id;
-    }
-
-    class ZabbixUserGroupGetObjectResponse
-    {
-        public $jsonrpc;
-        public $result = array("usrgrpid" => "", "name" => "", "gui_acces" => "", "users_status" => "", "debug_mode" => "");
-        public $id;
-    }
-
-    class ZabbixUserGetResponse
-    {
-        public $id;
-        public $jsonrpc;
-
-        public $result = array
-        (
-            "userid" => "",
-            "name" => "",
-            "surname" => "",
-            "url" => "",
-            "autologin" => "",
-            "autologout" => "",
-            "refresh" => "",
-            "type" => "",
-            "theme" => "",
-            "attempt_failed" => "",
-            "attempt_clock" => "",
-            "rows_per_page" => ""
-        );
-    }
-
-    class ZabbixTemplateGetResponse
-    {
-        public $jsonrpc;
-        public $result;
-        public $templateid = [];
-        public $id;
-
-        public function  __construct($json = false)
+        /**
+         * Set the host groups that'll be assigned the template.
+         *
+         * @param   array       $arg         An array of host group IDs.
+         */
+        public function SetNames($arg)
         {
-            if ($json)
-            {
-                $this->Set($json);
-            }
-        }
+            $this->name = array();
 
-        public function Set($data)
-        {
-            foreach ($data as $key => $value)
+            if (is_array($arg) && count($arg) > 0)
             {
-                if (is_array($value))
+                foreach ($arg as $item)
                 {
-                    $sub = new ZabbixTemplateGetResponse();
-                    $sub->Set($value);
-                    $value = $sub;
+                    $this->name[] = $item;
                 }
-
-                $this->{$key} = $value;
+            }
+            else
+            {
+                $this->name[] = $arg;
             }
         }
     }
+
+    #endregion
 }

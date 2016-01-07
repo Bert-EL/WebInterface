@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: developer
@@ -8,66 +9,93 @@
 
 namespace WebServices;
 
-    require_once dirname(dirname(__DIR__)) . '/include/ZabbixAPI.php';
-    require_once dirname(dirname(__DIR__)) . '/include/ZabbixClasses.php';
-    require_once dirname(dirname(__DIR__)) . '/include/CustomerParser.php';
+    require_once dirname(dirname(__DIR__)) . "/include/ZabbixAPI.php";
+    require_once dirname(dirname(__DIR__)) . "/include/ZabbixClasses.php";
+    require_once dirname(dirname(__DIR__)) . "/include/CustomerParser.php";
+    require_once "create-customer.php";
 
     $parser = new CustomerParser();
     $zapi = new ZabbixAPI();
     $zapi->Authenticate();
 
-    var_dump($_REQUEST);
+    $messageToUser = "";
+    $showMessageToUser = false;
 
-    $customer = new Customer();
-    $user = new User();
-    $userGroup = new UserGroup();
-    $hostGroup = new HostGroup();
-    $action = new Action();
-    $template = new Template();
-
-    $isNameSelected = !empty($_REQUEST["cbox_Customer"]);
-
-    if ($zapi->IsValidAuthToken())
+    if (isset($_REQUEST["cbox_Customer"]))
     {
-        if ($isNameSelected)
+        $customer = new Customer();
+        $customer->name = $_REQUEST["cbox_Customer"];
+        $customer->code = $parser->GetCodeByName($customer->name);
+
+        $user = new User();
+        $user->name = $zapi->GetNewUsername($customer->code);
+
+        $userGroup = new UserGroup();
+        $userGroup->name = $zapi->GetNewUserGroupName($customer);
+
+        $hostGroup = new HostGroup();
+        $hostGroup->name = $zapi->GetNewHostGroupName($customer);
+
+        $action = new Action();
+        $action->name = $zapi->GetNewActionName($customer);
+
+        $template = new Template();
+        $template->name = $zapi->GetNewTemplateName($customer);
+
+        if (isset($_REQUEST["btn_Submit"]))
         {
-            $customer->name = $_POST["cbox_Customer"];
-            $customer->code = $parser->GetCodeByName($customer->name);
+            if (!is_null($customer))
+            {
+                $host = new Host();
+                $CreateCustomer = new CreateCustomer($zapi);
+                $hostGroup->id = $zapi->CreateHostGroupByCode($customer);
 
-            $user->name = $zapi->GetNewUsername($customer->code);
-            $userGroup->name = $zapi->GetNewUserGroupName($customer);
-            $hostGroup->name = $zapi->GetNewHostGroupName($customer);
-            $action->name = $zapi->GetNewActionName($customer);
-            $template->name = $zapi->GetNewTemplateName($customer);
-        }
+                if ($hostGroup->id !== 0)
+                {
+                    $userGroup->id = $zapi->CreateUserGroupByCode($customer, $hostGroup->id, Permission::ReadOnlyAccess);
+                    $action->id = $zapi->CreateActionForNewHost($customer, $hostGroup->id, array(10163, 10211));
 
-        if (!empty($_POST["submit_fInit"]))
-        {
-//            $hostGroup->id = $zapi->CreateHostGroupByCode($customer);
-//            $userGroup->id = $zapi->CreateUserGroupByCode($customer, $hostGroup->id, Permission::ReadOnlyAccess);
-//            $user->id = $zapi->CreateUserByCode($customer->code, NewCustomer::DEFAULT_PASSWORD, $userGroup->id);
-//            $zapi->CreateActionForNewHost($customer, $hostGroup->name, array(10163, 10211));
-        }
+                    if ($userGroup->id !== 0)
+                    {
+                        $user->id = $zapi->CreateUserByCode($customer->code, CustomerSettings::DEFAULT_PASSWORD, $userGroup->id);
+                    }
 
-        if (!empty($_POST["submit_fHost"]))
-        {
-            $ip = $_POST["tbox_IP"];
-            $dns = $_POST["tbox_DNS"];
-            $type = $_POST["cbox_Type"];
-            $port = $_POST["tbox_Port"];
-            $hostname = $_POST["hostname"];
-            $useIP = ($_POST["useip"] === "on");
-            $isDefault = ($_POST["default"] === "on");
+                    $useIP = ($_REQUEST["rb_IpDns"] === "on");
+                    $isDefault = ($_REQUEST["chbox_DefaultInterface"] === "on");
 
-            $interface = new HostInterface(InterfaceType::GetValue($type), $isDefault, $useIP);
-            $interface->port = $port;
-            $interface->ip = ($useIP) ? ($ip) : ("");
-            $interface->dns = (!$useIP) ? ($dns) : ("");
+                    $interface = new HostInterface(InterfaceType::GetValue($_REQUEST["cbox_Type"]), $isDefault, $useIP);
+                    $interface->port = $_REQUEST["tbox_Port"];
+                    $interface->ip = ($useIP) ? ($_REQUEST["tbox_IP"]) : ("");
+                    $interface->dns = (!$useIP) ? ($_REQUEST["tbox_DNS"]) : ("");
 
-//            $zapi->CreateHost($hostname, $hostGroupID, $interface);
+                    $host->name = $_REQUEST["tbox_Preview"];
+                    $host->id = $zapi->CreateHost($host->name, $hostGroup->id, $interface);
+
+                    if ($host->id !== 0)
+                    {
+                        $alias = $zapi->GetTemplateAlias($customer);
+                        $template->id = $zapi->CreateTemplate($template->name, $alias, $hostGroup->id, $host->id);
+                    }
+                }
+
+                $showMessageToUser = true;
+                $messageToUser .= $CreateCustomer->EvaluateElement(NameType::User, $user);
+                $messageToUser .= $CreateCustomer->EvaluateElement(NameType::UserGroup, $userGroup);
+                $messageToUser .= $CreateCustomer->EvaluateElement(NameType::Host, $host);
+                $messageToUser .= $CreateCustomer->EvaluateElement(NameType::HostGroup, $hostGroup);
+                $messageToUser .= $CreateCustomer->EvaluateElement(NameType::Template, $template);
+                $messageToUser .= $CreateCustomer->EvaluateElement(NameType::Action, $action);
+            }
+
+            unset($customer);
+            unset($user);
+            unset($userGroup);
+            unset($host);
+            unset($hostGroup);
+            unset($template);
+            unset($action);
         }
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +108,7 @@ namespace WebServices;
     <!-- BEGIN HEAD -->
     <head>
         <meta charset="utf-8" />
-        <title>Electro-Line | Monitring Portal</title>
+        <title>Electro-Line | Monitoring Portal</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -145,12 +173,10 @@ namespace WebServices;
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
-                                    <a href="">
-                                        <i class="icon-lock"></i> Lock Screen </a>
+                                    <a href=""><i class="icon-lock"></i> Lock Screen </a>
                                 </li>
                                 <li>
-                                    <a href="">
-                                        <i class="icon-key"></i> Log Out </a>
+                                    <a href=""><i class="icon-key"></i> Log Out </a>
                                 </li>
                             </ul>
                         </li>
@@ -175,10 +201,12 @@ namespace WebServices;
 
             <!-- BEGIN SIDEBAR -->
             <div class="page-sidebar-wrapper">
+
                 <!-- BEGIN SIDEBAR -->
                 <div class="page-sidebar navbar-collapse collapse">
+
                     <!-- BEGIN SIDEBAR MENU -->
-                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                    <ul class="page-sidebar-menu page-header-fixed" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
                         <li class="heading">
                             <h3 class="uppercase">Monitoring</h3>
                         </li>
@@ -294,16 +322,23 @@ namespace WebServices;
                             <ul class="sub-menu">
                                 <li class="nav-item active open">
                                     <a href="../../wizard/new-customer/" class="nav-link">
-                                        <span class="title">Nieuwe klant aanmaken</span>
+                                        <span class="title">Klant aanmaken</span>
                                         <span class="selected"></span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../../wizard/delete-customer/" class="nav-link">
+                                        <span class="title">Klant verwijderen</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                     <!-- END SIDEBAR MENU -->
+
                 </div>
                 <!-- END SIDEBAR -->
+
             </div>
             <!-- END SIDEBAR -->
 
@@ -313,18 +348,41 @@ namespace WebServices;
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
 
+                    <!-- BEGIN PAGE BAR -->
+                    <div class="page-bar">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <a href="../../">Home</a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <li>
+                                <span>Klant aanmaken</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- END PAGE BAR -->
+
                     <!-- BEGIN PAGE TITLE-->
                     <h3 class="page-title">Voeg een nieuwe klant toe aan de monitoring omgeving</h3>
                     <!-- END PAGE TITLE-->
-
-                    <!-- END PAGE HEADER-->
-                    <div class="note note-info">
-                        <p>
-                            Gebruik deze pagina om een nieuwe gebruiker toe te voegen aan de monitoring omgeving.<br/>
-                            De gegevens die gebruikt worden om de nieuwe klant aan te maken zijn afkomstig van een XML.
-                        </p>
-                    </div>
-
+<?php
+    if ($showMessageToUser)
+    {
+?>
+                        <!-- BEGIN USER MESSAGE -->
+                        <div class="col-md-12">
+                            <div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                                <h4 class="alert-heading"><b>Info</b></h4>
+                                <p>
+                                    <?php echo $messageToUser ?>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- END USER MESSAGE -->
+<?php
+    }
+?>
                     <!-- BEGIN FORMS -->
                     <div class="col-md-12">
                         <div class="portlet light bordered" id="customerWizard">
@@ -337,7 +395,7 @@ namespace WebServices;
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <form class="form-horizontal" role="form" id="fInit" action="" method="post">
+                                <form id="form-create" class="form-horizontal" role="form" action="" method="post">
                                     <div class="form-wizard">
                                         <div class="form-body">
                                             <ul class="nav nav-pills nav-justified steps">
@@ -385,9 +443,9 @@ namespace WebServices;
                                                             <select name="cbox_Customer" id="cbox_Customer" class="form-control" >
                                                                 <option value=""></option>
                                                                 <?php
-                                                                    foreach ($parser->GetCustomers() as $item)
+                                                                    foreach ($parser->GetUnprocessedCustomers() as $item)
                                                                     {
-                                                                        if ($isNameSelected && $customer->name == $item->name)
+                                                                        if (isset($customer) && $customer->name == $item->name)
                                                                         {
                                                                             echo "<option selected value='" . $item->name . "'>" . $item->name . "</option>";
                                                                         }
@@ -403,152 +461,142 @@ namespace WebServices;
                                                     <div class="form-group">
                                                         <label class="control-label col-md-3" for="tbox_User">Gebruiker</label>
                                                         <div class="col-md-4">
-                                                            <input type="text" id="tbox_User" class="form-control" value="<?php echo $user->name ?>" readonly>
+                                                            <input type="text" id="tbox_User" class="form-control" value="<?php echo(isset($user) ? ($user->name) : ("")); ?>" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label col-md-3" for="tbox_UserGroup">Gebruikersgroep</label>
                                                         <div class="col-md-4">
-                                                            <input type="text" id="tbox_UserGroup" class="form-control" value="<?php echo $userGroup->name ?>" readonly>
+                                                            <input type="text" id="tbox_UserGroup" class="form-control" value="<?php echo(isset($userGroup) ? ($userGroup->name) : ("")); ?>" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label" for="tbox_HostGroup">Host groep</label>
                                                         <div class="col-md-4">
-                                                            <input type="text" id="tbox_HostGroup" class="form-control" value="<?php echo $hostGroup->name ?>" readonly>
+                                                            <input type="text" id="tbox_HostGroup" class="form-control" value="<?php echo(isset($hostGroup) ? ($hostGroup->name) : ("")); ?>" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-md-3 control-label" for="tbox_Action">Actie</label>
                                                         <div class="col-md-4">
-                                                            <input type="text" id="tbox_Action" class="form-control" value="<?php echo $action->name ?>" readonly>
+                                                            <input type="text" id="tbox_Action" class="form-control" value="<?php echo(isset($action) ? ($action->name) : ("")); ?>" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label col-md-3" for="tbox_Template">Template</label>
                                                         <div class="col-md-4">
-                                                            <input type="text" id="tbox_Template" class="form-control" value="<?php echo $template->name ?>" readonly>
+                                                            <input type="text" id="tbox_Template" class="form-control" value="<?php echo(isset($template) ? ($template->name) : ("")); ?>" readonly>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <div class="col-md-6 col-md-offset-2">
-                                                            <div class="note note-danger">
-                                                                <h4 class="block">Opgelet!</h4>
-                                                                <p>
-                                                                    Door op 'volgende' te klikken worden bovenstaande elementen aangemaakt.
-                                                                    De volgende stap heeft namelijk deze gegevens nodig om de klant aan te maken.
-                                                                    Bij een fout dient u deze elementen, momenteel, manueel te verwijderen.
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <input name="code" type="hidden" id="hidden_code" value="<?php echo $customer->code ?>">
+<?php
+    if (isset($customer))
+    {
+?>
+                                                        <input type="hidden" id="hidden_code" value="<?php echo $customer->code ?>">
+<?php
+    }
+?>
                                                 </div>
                                                 <!-- END USER(GROUP) & HOSTGROUP SETTINGS-->
 
                                                 <!-- BEGIN HOST SETTINGS -->
                                                 <div class="tab-pane" id="tab2">
+                                                    <h3 class="block">Gegevens</h3>
                                                     <div class="form-group">
-                                                        <h4 class="block">Gegevens</h4>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label" for="cbox_HostGroup">Groep</label>
-                                                            <div class="col-md-4">
-                                                                <input type="text" name="tbox_HostGroup" id="tbox_HostGroup" class="form-control" value="<?php echo $hostGroup->name ?>" readonly>
-                                                            </div>
+                                                        <label class="col-md-3 control-label" for="cbox_HostGroup">Groep</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" id="tbox_HostGroup" class="form-control" value="<?php echo(isset($hostGroup) ? ($hostGroup->name) : ("")); ?>" readonly>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label" for="tbox_Prefix">
-                                                                Prefix
-                                                                <span class="required" aria-required="true"> * </span>
-                                                            </label>
-                                                            <div class="col-md-4">
-                                                                <input type="text" name="tbox_Prefix" id="tbox_Prefix" class="form-control" onkeydown="PreviewHostname()" onkeyup="this.onkeydown()" onchange="this.onkeydown()">
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label" for="tbox_Prefix">
+                                                            Prefix
+                                                            <span class="required" aria-required="true"> * </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" name="tbox_Prefix" id="tbox_Prefix" class="form-control">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label" for="tbox_Host">
-                                                                Host
-                                                                <span class="required" aria-required="true"> * </span>
-                                                            </label>
-                                                            <div class="col-md-4">
-                                                                <input type="text" name="tbox_Host" id="tbox_Host" class="form-control"  onkeydown="PreviewHostname()" onkeyup="this.onkeydown()" onchange="this.onkeydown()">
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label" for="tbox_Host">
+                                                            Host
+                                                            <span class="required" aria-required="true"> * </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" name="tbox_Host" id="tbox_Host" class="form-control">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label" for="tbox_Preview">Voorbeeld</label>
-                                                            <div class="col-md-4">
-                                                                <input type="text" name="tbox_Preview" id="tbox_Preview" class="form-control" readonly>
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label" for="tbox_Preview">Voorbeeld</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" name="tbox_Preview" id="tbox_Preview" class="form-control" readonly>
                                                         </div>
-                                                        <input name="code" type="hidden" id="hidden_code" value="<?php echo $customer->code ?>">
                                                     </div>
                                                 </div>
                                                 <!-- END HOST SETTINGS -->
 
                                                 <!-- BEGIN HOST INTERFACE SETTINGS -->
                                                 <div class="tab-pane" id="tab3">
+                                                    <h3 class="block">Interface</h3>
                                                     <div class="form-group">
-                                                        <h3 class="block">Interface</h3>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label"></label>
-                                                            <div class="col-md-4">
-                                                                <div class="checkbox-list">
-                                                                    <label>
-                                                                        <span><input type="checkbox" name="chbox_DefaultInterface" checked></span>Standaard interface
-                                                                    </label>
-                                                                </div>
+                                                        <label class="col-md-3 control-label"></label>
+                                                        <div class="col-md-4">
+                                                            <div class="checkbox-list">
+                                                                <label>
+                                                                    <span><input type="checkbox" name="chbox_DefaultInterface" checked></span>Standaard interface
+                                                                </label>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label"></label>
-                                                            <div class="col-md-4">
-                                                                <div class="btn-group" data-toggle="buttons">
-                                                                    <label class="btn green active">
-                                                                        <input type="radio" name="rb_IP-DNS" id="rb_IP" class="toggle" checked>IP
-                                                                    </label>
-                                                                    <label class="btn green">
-                                                                        <input type="radio" name="rb_IP-DNS" id="rb_DNS" class="toggle">DNS
-                                                                    </label>
-                                                                </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label"></label>
+                                                        <div class="col-md-4">
+                                                            <div class="btn-group" data-toggle="buttons">
+                                                                <label class="btn green active">
+                                                                    <input type="radio" name="rb_IpDns" id="rb_IP" class="toggle" checked>IP
+                                                                </label>
+                                                                <label class="btn green">
+                                                                    <input type="radio" name="rb_IpDns" id="rb_DNS" class="toggle">DNS
+                                                                </label>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label" for="tbox_IP">IP</label>
-                                                            <div class="col-md-4">
-                                                                <input type="text" name="tbox_IP" id="tbox_IP" class="form-control">
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label" for="tbox_IP">IP</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" name="tbox_IP" id="tbox_IP" class="form-control">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label" for="tbox_DNS">DNS</label>
-                                                            <div class="col-md-4">
-                                                                <input type="text" name="tbox_DNS" id="tbox_DNS" class="form-control">
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label" for="tbox_DNS">DNS</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" name="tbox_DNS" id="tbox_DNS" class="form-control" readonly>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label" for="tbox_Port">
-                                                                Poort
-                                                                <span class="required" aria-required="true"> * </span>
-                                                            </label>
-                                                            <div class="col-md-4">
-                                                                <input type="text" name="tbox_Port" id="tbox_Port" class="form-control">
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label" for="tbox_Port">
+                                                            Poort
+                                                            <span class="required" aria-required="true"> * </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" name="tbox_Port" id="tbox_Port" class="form-control">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="col-md-3 control-label" for="cbox_Type">
-                                                                Type
-                                                                <span class="required" aria-required="true"> * </span>
-                                                            </label>
-                                                            <div class="col-md-4">
-                                                                <select name="type" id="cbox_Type" class="form-control" required>
-                                                                    <option value=""></option>
-                                                                    <?php
-                                                                        foreach (InterfaceType::GetNames() as $item)
-                                                                        {
-                                                                            echo "<option value='" . $item . "'>" . $item . "</option>";
-                                                                        }
-                                                                    ?>
-                                                                </select>
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 control-label" for="cbox_Type">
+                                                            Type
+                                                            <span class="required" aria-required="true"> * </span>
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <select name="cbox_Type" id="cbox_Type" class="form-control" required>
+                                                                <option value=""></option>
+                                                                <?php
+                                                                    foreach (InterfaceType::GetNames() as $item)
+                                                                    {
+                                                                        echo '<option value="' . $item . '">' . $item . '</option>';
+                                                                    }
+                                                                ?>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -556,19 +604,14 @@ namespace WebServices;
 
                                             </div>
                                         </div>
-                                        <div class="form-actions right">
-                                            <a href="javascript:;" class="btn default button-previous disabled" style="display: none;">
-                                                <i class="fa fa-angle-left"></i>
-                                                Terug
-                                            </a>
-                                            <a href="javascript:;" class="btn btn-outline green button-next">
-                                                Volgende
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                            <a href="javascript:;" class="btn green button-submit" style="display: none;">
-                                                Klaar
-                                                <i class="fa fa-check"></i>
-                                            </a>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <a href="javascript:;" class="btn default button-previous disabled" style="display: none;"><i class="fa fa-angle-left"></i>&nbsp;Terug</a>
+                                                    <a href="javascript:;" class="btn green bold button-next">Volgende&nbsp;<i class="fa fa-angle-right"></i></a>
+                                                    <button type="submit" name="btn_Submit" id="btn_Submit" class="btn green button-submit">Klaar&nbsp;<i class="fa fa-check"></i></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -576,10 +619,13 @@ namespace WebServices;
                         </div>
                     </div>
                     <!-- END FORMS -->
+
                 </div>
                 <!-- END CONTENT BODY -->
+
             </div>
             <!-- END CONTENT -->
+
         </div>
         <!-- END CONTAINER -->
 
@@ -608,9 +654,14 @@ namespace WebServices;
         <script src="../../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
         <script src="../../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
         <script src="../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <!-- END CORE PLUGINS -->
+
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
         <script src="../../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
         <script src="../../assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
-        <!-- END CORE PLUGINS -->
+        <script src="../../assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+        <script src="../../assets/global/plugins/jquery.input-ip-address-control-1.0.min.js" type="text/javascript"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
 
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="../../assets/global/scripts/app.min.js" type="text/javascript"></script>
@@ -622,6 +673,7 @@ namespace WebServices;
         <script src="../../assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
 
-        <script src="wizard.new-customer.scripts.js" type="text/javascript"></script>
+        <script src="wizard.new-customer.script.js" type="text/javascript"></script>
     </body>
+
 </html>

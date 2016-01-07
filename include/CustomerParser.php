@@ -81,15 +81,36 @@ namespace WebServices
         }
 
         /**
-         * Get the name and code of the monitoring customers.
+         * Get the names and codes of all processed monitoring customers.
          *
-         * @return array                            A collection of the name and code of the monitoring customers.
+         * @return  array                               The names and codes of the monitoring customers.
          */
-        public function GetCustomers()
+        public function GetProcessedCustomers()
+        {
+            return $this->GetCustomers(true);
+        }
+
+        /**
+         * Get the name and code of all unprocessed monitoring customers.
+         *
+         * @return array                                The names and codes of the monitoring customers.
+         */
+        public function GetUnprocessedCustomers()
+        {
+            return $this->GetCustomers(false);
+        }
+
+        /**
+         * Get the names and codes of the monitoring customers.
+         *
+         * @param   boolean   $areProcessed             Indication whether the customers are processed or not.
+         * @return  array                               The names and codes of the monitoring customers.
+         */
+        public function GetCustomers($areProcessed)
         {
             $customers = array();
 
-            if ($this->IsValidXML())
+            if ($this->IsValidXML() && is_bool($areProcessed))
             {
                 $existingGroups = $this->zapi->GetHostGroupNames();                                                         // Retrieve a list of existing host groups.
 
@@ -98,10 +119,31 @@ namespace WebServices
                     $customer = Customer::WithNameAndCode((string)$item->name, (int)$item->code);
                     $formattedName = $this->zapi->FormatGroupName(NameType::HostGroup, $customer);
 
-                    if (array_search($formattedName, $existingGroups) === false)
+                    if (in_array($formattedName, $existingGroups) === $areProcessed)
                     {
                         $customers[] = $customer;                                                                           // Only added the non-existing host groups to the return array.
                     }
+                }
+            }
+
+            return $customers;
+        }
+
+        /**
+         * Get the names and codes of all monitoring customers.
+         *
+         * @return  array                           The names and codes of the monitoring customers.
+         */
+        public function GetAllCustomers()
+        {
+            $customers = array();
+
+            if ($this->IsValidXML())
+            {
+                foreach ($this->xml->xpath("//customer") as $item)                                                          // Ignore the parent node.
+                {
+                    $customer = Customer::WithNameAndCode((string)$item->name, (int)$item->code);
+                    $customers[] = $customer;                                                                               // Only added the non-existing host groups to the return array.
                 }
             }
 
@@ -120,7 +162,7 @@ namespace WebServices
 
             if (is_string($name))
             {
-                foreach ($this->GetCustomers() as $item)
+                foreach ($this->GetAllCustomers() as $item)
                 {
                     if ($item->name == $name)
                     {
@@ -143,7 +185,7 @@ namespace WebServices
 
             if (is_int($code))
             {
-                foreach ($this->GetCustomers() as $item)
+                foreach ($this->GetAllCustomers() as $item)
                 {
                     if ($item["code"] == $code)
                     {

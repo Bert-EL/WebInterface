@@ -17,7 +17,7 @@
     <!-- BEGIN HEAD -->
     <head>
         <meta charset="utf-8" />
-        <title>Electro-Line | Monitring Portal</title>
+        <title>Electro-Line | Monitoring Portal</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -148,7 +148,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="user/overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -162,17 +162,17 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="users/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="users/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="users/overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -186,17 +186,17 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="host/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="host/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="host/overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -210,17 +210,17 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="hosts/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="hosts/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="hosts/overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -235,7 +235,12 @@
                             <ul class="sub-menu">
                                 <li class="nav-item">
                                     <a href="wizard/new-customer/" class="nav-link">
-                                        <span class="title">Nieuwe klant aanmaken</span>
+                                        <span class="title">Klant aanmaken</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="wizard/delete-customer/" class="nav-link">
+                                        <span class="title">Klant verwijderen</span>
                                     </a>
                                 </li>
                             </ul>
@@ -267,18 +272,19 @@
                                     De opgevraagde pagina bestaat mogelijks niet <br/>
                                     of is op dit ogenblik onbeschikbaar.<br/><br/>
 
-                                    <a href="index.php"> Ga terug </a> of gebruik de onderstaande zoekbalk.
+                                    <a href="index.php">Ga terug</a> naar het hoofdmenu.
+<!--                                    of gebruik de onderstaande zoekbalk.-->
                                 </p>
-                                <form action="">
-                                    <div class="input-group input-medium">
-                                        <input type="text" class="form-control" placeholder="keyword...">
-                                        <span class="input-group-btn">
-                                            <button type="submit" class="btn green">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </form>
+<!--                                <form action="">-->
+<!--                                    <div class="input-group input-medium">-->
+<!--                                        <input type="text" class="form-control" placeholder="keyword...">-->
+<!--                                        <span class="input-group-btn">-->
+<!--                                            <button type="submit" class="btn green">-->
+<!--                                                <i class="fa fa-search"></i>-->
+<!--                                            </button>-->
+<!--                                        </span>-->
+<!--                                    </div>-->
+<!--                                </form>-->
                             </div>
                         </div>
                     </div>

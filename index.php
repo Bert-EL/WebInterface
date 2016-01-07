@@ -8,13 +8,11 @@ namespace WebServices;
     $zapi = new ZabbixAPI();
     $zapi->Authenticate();
 
-    var_dump($_REQUEST);
-
     $_REQUEST["username"] = "Developer";
 
     if (!isset($_REQUEST["username"]) || !isset($_REQUEST["password"]) || !$zapi->AuthenticateUser($_REQUEST["username"], $_REQUEST["password"]))
     {
-//        header("Location: /projects/WebInterface/Authentication/index.php");
+//        header("Location: /projects/WebInterface/authentication/index.php");
 //        die();
     }
     else
@@ -160,7 +158,7 @@ namespace WebServices;
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="user/overview" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -174,17 +172,17 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="users/create" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="users/delete" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="users/overview" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -198,17 +196,17 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="host/create" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="host/delete" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="host/overview" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -222,17 +220,17 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="hosts/create" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="hosts/delete" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="hosts/overview" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -247,7 +245,12 @@ namespace WebServices;
                             <ul class="sub-menu">
                                 <li class="nav-item">
                                     <a href="wizard/new-customer/" class="nav-link">
-                                        <span class="title">Nieuwe klant aanmaken</span>
+                                        <span class="title">Klant aanmaken</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="wizard/delete-customer/" class="nav-link">
+                                        <span class="title">Klant verwijderen</span>
                                     </a>
                                 </li>
                             </ul>

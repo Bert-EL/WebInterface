@@ -10,8 +10,10 @@
 namespace WebServices;
 
     require_once dirname(dirname(__DIR__)) . '/include/ZabbixAPI.php';
+    require_once dirname(dirname(__DIR__)) . "/include/ZabbixClasses.php";
     require_once dirname(dirname(__DIR__)) . '/include/CustomerParser.php';
 
+    $parser = new CustomerParser();
     $zapi = new ZabbixAPI();
     $zapi->Authenticate();
 ?>
@@ -26,7 +28,7 @@ namespace WebServices;
     <!-- BEGIN HEAD -->
     <head>
         <meta charset="utf-8" />
-        <title>Electro-Line | Monitring Portal</title>
+        <title>Electro-Line | Monitoring Portal</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -153,7 +155,7 @@ namespace WebServices;
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../../wizard/new-customer/" class="nav-link">
+                                    <a href="../overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -167,17 +169,17 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../../users/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../../users/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../../users/overview" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -191,17 +193,17 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../../host/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../../host/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../../host/overview/" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -215,17 +217,17 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../../hosts/create/" class="nav-link">
                                         <span class="title">Aanmaken</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../../hosts/delete/" class="nav-link">
                                         <span class="title">Verwijderen</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="../../hosts/overview" class="nav-link">
                                         <span class="title">Overzicht</span>
                                     </a>
                                 </li>
@@ -239,8 +241,13 @@ namespace WebServices;
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <span class="title">Nieuwe klant aanmaken</span>
+                                    <a href="../../wizard/new-customer/" class="nav-link">
+                                        <span class="title">Klant aanmaken</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../../wizard/delete-customer/" class="nav-link">
+                                        <span class="title">Klant verwijderen</span>
                                     </a>
                                 </li>
                             </ul>
@@ -260,53 +267,106 @@ namespace WebServices;
                 <!-- BEGIN CONTENT BODY -->
                 <div class="page-content">
 
+                    <!-- BEGIN PAGE BAR -->
+                    <div class="page-bar">
+                        <ul class="page-breadcrumb">
+                            <li>
+                                <a href="../../">Home</a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <li>
+                                <span>Remove user</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- END PAGE BAR -->
+
                     <!-- BEGIN PAGE TITLE-->
-                    <h3 class="page-title">Verwijderen van een gebruiker</h3>
+                    <h3 class="page-title">Remove a user from the monitoring environment</h3>
                     <!-- END PAGE TITLE-->
 
-                    <!-- BEGIN CONTENT-->
-                    <div class="note note-info">
-                        <p>
-                            Gebruik deze pagina om een gebruiker uit de monitoring omgeving te verwijderen.
-                        </p>
-                    </div>
-                    <!-- END CONTENT -->
-
                     <!-- BEGIN FORMS -->
-                    <div class="col-md-6">
+                    <div class="col-md-12">
 
-                        <!-- BEGIN USER(GROUP) & HOSTGROUP SETTINGS -->
+                        <!-- BEGIN PORTLET SETTINGS -->
                         <div class="portlet light bordered">
+
+                            <!-- BEGIN PORTLET TITLE -->
                             <div class="portlet-title">
                                 <div class="caption font-red-sunglo">
                                     <i class="icon-user font-red-sunglo"></i>
-                                    <span class="caption-subject bold uppercase">Gebruikers</span>
+                                    <span class="caption-subject bold uppercase">Users by customer</span>
                                 </div>
                             </div>
+                            <!-- END PORTLET TITLE -->
+
+                            <!-- BEGIN PORTLET BODY -->
                             <div class="portlet-body form">
-                                <form class="form-horizontal" role="form" id="" action="" method="post">
-                                    <div class="form-body">
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label" for="cbox_User">Gebruiker</label>
-                                            <div class="col-md-9">
-                                                <select name="name" class="form-control" id="cbox_User">
-                                                    <option value=""></option>
-                                                    <?php
-                                                        foreach ($zapi->GetUsers() as $item)
+
+                                <!-- BEGIN FORM -->
+                                <form id="form-deleteUser" class="form-horizontal" role="form" action="" method="post">
+
+                                    <!-- BEGIN CUSTOMER SELECTION -->
+                                    <div class="form-group">
+                                        <label class=" control-label col-md-3" for="cbox_Customer">
+                                            Customer
+                                            <span class="required" aria-required="true">&nbsp;*</span>
+                                        </label>
+                                        <div class="col-md-4">
+                                            <select name="cbox_Customer" id="cbox_Customer" class="form-control" >
+                                                <option value=""></option>
+                                                <?php
+                                                    foreach ($parser->GetProcessedCustomers() as $item)
+                                                    {
+                                                        if (isset($customer) && $customer->name == $item->name)
+                                                        {
+                                                            echo "<option selected value='" . $item->name . "'>" . $item->name . "</option>";
+                                                        }
+                                                        else
                                                         {
                                                             echo "<option value='" . $item->name . "'>" . $item->name . "</option>";
                                                         }
-                                                    ?>
-                                                </select>
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- END CUSTOMER SELECTION -->
+
+                                    <!-- BEGIN USER SELECTION -->
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="cbox_User">Gebruiker</label>
+                                        <div class="col-md-4">
+                                            <select name="cbox_User" id="cbox_User" class="form-control">
+                                                <option value=""></option>
+                                                <?php
+                                                    foreach ($zapi->GetUsersByUserGroup($userGroupName) as $item)
+                                                    {
+                                                        echo "<option value='" . $item->id ."'>". $item->name . "</option>";
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- END USER SELECTION -->
+
+                                    <!-- BEGIN FORM ACTIONS -->
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-offset-3 col-md-9">
+                                                <button type="reset" class="btn btn-default">Cancel</button>
+                                                <button name="submit_Delete" class="btn bold red">Remove</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-actions right">
-                                        <button type="reset" class="btn default">Annuleren</button>
-                                        <button name="submit_Delete" class="btn red-mint uppercase btn-large">Verwijderen</button>
-                                    </div>
+                                    <!-- END FORM ACTIONS -->
+
                                 </form>
+                                <!-- BEGIN FORM -->
+
                             </div>
+                            <!-- END PORTLET BODY -->
+
                         </div>
                         <!-- END USER(GROUP) & HOSTGROUP SETTINGS-->
 
